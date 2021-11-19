@@ -63,3 +63,34 @@ section.resume.text-center{
 img.img-fluid{
     max-width: 50%
 }
+section.resume{
+    background-color: lightGray;
+    padding: 20px;
+    border-radius: 10px;
+    color: black;
+}
+.likes {
+    font-size: 20px;  
+    text-align: center;
+}
+img.hearts {
+    width: 32px;
+    height: 30px;
+    position: relative;
+    display: inline-block;
+}
+.button {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    background: #0D6EFD;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 10px;
+    margin: 5px;
+}

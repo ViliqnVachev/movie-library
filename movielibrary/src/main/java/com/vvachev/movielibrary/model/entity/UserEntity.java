@@ -40,7 +40,18 @@ public class UserEntity extends BaseEntity {
 	@JoinTable(name = "dislikes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
 	private Set<MovieEntity> dislikedMovies;
 
+	@Column
+	private boolean isActive;
+
 	public UserEntity() {
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public Set<MovieEntity> getDislikedMovies() {
