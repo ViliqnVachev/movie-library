@@ -19,7 +19,12 @@ public class RoleEntity extends BaseEntity {
 	public RoleEntity() {
 	}
 
-	public RoleEntity(RoleEnum role) {
+	public RoleEnum getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEnum role) {
 		this.role = role;
 	}
+
 }
