@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MovieLibrary</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -17,7 +18,7 @@
 		<div>
 			<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
 				<a class="navbar-brand" href="/"><img alt="movie picture"
-					src="/image/movie.png" class="logo"></a>
+					src="/images/movie.png" class="logo"></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
 					aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -27,15 +28,16 @@
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto col-12 justify-content-between">
-						<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">Add
+						<li class="nav-item" sec:authorize="isAuthenticated()"><a
+							class="nav-link" href="/home">Home</a></li>
+						<li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/movies/add">Add
 								Movie</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">My
+						<li class="nav-item" sec:authorize="isAuthenticated()" ><a class="nav-link" href="/users/myself">My
 								profile</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">About</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">My
-								movies</a></li>
-						<li class="nav-item dropdown"><a
+						<li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/movies/my-movies" sec:authorize="isAuthenticated()" >My movies</a></li>
+						<li class="nav-item dropdown" sec:authorize="isAuthenticated()" ><a
 							class="nav-link dropdown-toggle" href="/" id="navbarDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> Admin </a>
@@ -45,16 +47,16 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="/">Something else here</a>
 							</div></li>
-						<li class="nav-item">
+						<li class="nav-item" sec:authorize="isAuthenticated()" >
 							<div class="form-inline my-2 my-lg-0 border px-3">
-								<div class="logged-user" text="Welcome, Gosho"></div>
 								<a class="nav-link" href="#">Logout</a>
 							</div>
 						</li>
 
-						<li class="nav-item"><a class="nav-link" href="#">Register</a>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="#">Login</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/users/register}">Register</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/users/login}">Login</a></li>
 
 					</ul>
 				</div>
@@ -65,7 +67,7 @@
 		<div class="col-lg-12 bg-dark container modal-footer">
 			<p>&copy; 2021 - Viliyan Vachev</p>
 			<a class="navbar-brand" href="/"><img alt="movie picture"
-				src="/image/movie.png" class="logo"></a>
+				src="/images/movie.png" class="logo"></a>
 		</div>
 	</footer>
 </body>

@@ -5,7 +5,7 @@
 
 </head>
 
-<body background="/image/2.png">
+<body background="/images/2.png">
 	<header th:replace="fragments/common::navigation"> </header>
 
 	<main>
@@ -21,7 +21,7 @@
 							<label for="inputUsername" class="login col-form-label">Username</label>
 						</div>
 						<div class="col-auto">
-							<input type="text" th:errorclass="is-invalid" id="inputUsername"
+							<input type="text" id="inputUsername"
 								class="form-control" min="4" max="50"
 								aria-describedby="usernameHelpInline" placeholder="username">
 							<p class="invalid-feedback errors alert alerd-danger">
