@@ -7,6 +7,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.vvachev.movielibrary.service.interfaces.IEmailService;
+import com.vvachev.movielibrary.utils.EmailConstants;
 import com.vvachev.movielibrary.web.events.RegistrationCreateEvent;
 
 @Component
@@ -23,7 +24,8 @@ public class EmailSenderListener {
 
 	@EventListener(RegistrationCreateEvent.class)
 	public void onRegistration(RegistrationCreateEvent registrationCreateEvent) {
-		emailService.sendSimpleMessage(registrationCreateEvent.user().getEmail(), "test", "test");
-		LOGGER.info("Send email!");
+		emailService.sendSimpleMessage(registrationCreateEvent.getUser().getEmail(), EmailConstants.SUBJECT,
+				String.format(EmailConstants.CONTENT_TEMPLATE, registrationCreateEvent.getUser().getUsername()));
+		LOGGER.info("Sending an email!");
 	}
 }

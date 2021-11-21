@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.vvachev.movielibrary.service.interfaces.IEmailService;
+import com.vvachev.movielibrary.utils.EmailConstants;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
@@ -20,7 +21,7 @@ public class EmailServiceImpl implements IEmailService {
 	@Override
 	public void sendSimpleMessage(String to, String subject, String text) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("movielib1995@gmail.com");
+		message.setFrom(EmailConstants.SENDER);
 		message.setTo(to);
 		message.setSubject(subject);
 		message.setText(text);

@@ -3,16 +3,18 @@ package com.vvachev.movielibrary.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.vvachev.movielibrary.utils.AppConstants;
+
 @Controller
 public class HomeController {
 
 	@GetMapping
 	public String index() {
-		return "index";
+		return AppConstants.INDEX;
 	}
 
-	@GetMapping("/home")
+	@GetMapping(AppConstants.HOME_PATH)
 	public String home() {
-		return "home";
+		return AppConstants.HOME;
 	}
 }

@@ -13,7 +13,7 @@ public class RegistrationCreateEvent extends ApplicationEvent {
 		this.user = user;
 	}
 
-	public UserServiceModel user() {
+	public UserServiceModel getUser() {
 		return user;
 	}
 

@@ -16,6 +16,7 @@ import com.vvachev.movielibrary.model.service.UserServiceModel;
 import com.vvachev.movielibrary.repository.RoleRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
+import com.vvachev.movielibrary.utils.AppConstants;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -41,12 +42,12 @@ public class UserServiceImpl implements IUserService {
 			RoleEntity userRole = roleRepositoy.findByRole(RoleEnum.USER).orElse(null);
 
 			UserEntity admin = new UserEntity();
-			admin.setUsername("admin");
-			admin.setFullName("admin admin");
-			admin.setPassword(passwordEncoder.encode("admin"));
+			admin.setUsername(AppConstants.UserConfiguration.ADMIN);
+			admin.setFullName(AppConstants.UserConfiguration.ADMIN);
+			admin.setPassword(passwordEncoder.encode(AppConstants.UserConfiguration.ADMIN));
 			admin.setRoles(Set.of(adminRole, userRole));
 			admin.setActive(true);
-			admin.setEmail("admin@abv.bg");
+			admin.setEmail(AppConstants.UserConfiguration.ADMIN_EMAIL);
 
 			userRepository.save(admin);
 		}
