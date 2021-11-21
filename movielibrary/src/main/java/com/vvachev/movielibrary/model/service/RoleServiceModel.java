@@ -1,12 +1,9 @@
 package com.vvachev.movielibrary.model.service;
 
-import javax.validation.constraints.NotNull;
-
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 
 public class RoleServiceModel extends BaseServiceModel {
 
-	@NotNull
 	private RoleEnum role;
 
 	public RoleServiceModel() {

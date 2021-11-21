@@ -21,7 +21,7 @@ public class UserEntity extends BaseEntity {
 	private String fullName;
 
 	@Column
-	private Integer age;
+	private int age;
 
 	@Column(nullable = false)
 	private String password;

@@ -94,3 +94,9 @@ img.hearts {
     margin-bottom: 10px;
     margin: 5px;
 }
+.custom-invalid-feedback{
+	color: red;
+}
+input.nav-link{
+	background-color: #212529;
+}

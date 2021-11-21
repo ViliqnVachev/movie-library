@@ -1,12 +1,9 @@
 package com.vvachev.movielibrary.model.service;
 
-import javax.validation.constraints.NotNull;
-
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 
 public class CategoryServiceModel extends BaseServiceModel {
 
-	@NotNull
 	private CategoryEnum name;
 
 	private String description;

@@ -26,6 +26,7 @@ public class DatabseInit implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		categoryService.initCategories();
 		roleService.initRoles();
+		userService.initUsers();
 	}
 
 }

@@ -15,17 +15,18 @@
 
 			<div class="row g-3 align-items-center">
 
-				<form action="#" method="post">
+				<form th:action="@{/users/login}" method="post">
 					<div>
 						<div class="col-auto">
 							<label for="inputUsername" class="login col-form-label">Username</label>
 						</div>
 						<div class="col-auto">
-							<input type="text" id="inputUsername"
+							<input th:value="${username}" type="text" id="inputUsername" name="username"
 								class="form-control" min="4" max="50"
 								aria-describedby="usernameHelpInline" placeholder="username">
-							<p class="invalid-feedback errors alert alerd-danger">
-								Invalid username</p>
+							<p th:if="${bad_credentials}" class="custom-invalid-feedback rounded">
+            					Invalid username or password.
+        					</p>
 						</div>
 					</div>
 					<div>
@@ -33,7 +34,7 @@
 							<label for="inputPassword" class="login col-form-label ">Password</label>
 						</div>
 						<div class="col-auto">
-							<input type="password" name="password" errorclass="is-invalid"
+							<input th:value="${password}" type="password" name="password"
 								id="inputPassword" min="4" max="50" class="form-control"
 								aria-describedby="passwordHelpInline" placeholder="password">
 

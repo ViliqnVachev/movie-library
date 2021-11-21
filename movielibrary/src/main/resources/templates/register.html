@@ -13,18 +13,23 @@
 		<h1 class="login border-bottom">Register</h1>
 		<div class="d-flex justify-content-center ">
 			<div class="row g-3">
-				<form action="#" th:method="post">
+				<form th:action="@{/users/register}" th:method="post"
+					th:object="${registerUserBinding}">
 					<div>
 						<div class="col-auto">
 							<label for="inputUsername" class="login col-form-label ">Username</label>
 						</div>
 						<div class="col-auto">
-							<input errorclass="is-invalid" type="text" id="inputUsername"
-								min="4" max="50" class="form-control"
-								aria-describedby="usernameHelpInline"> <small
-								id="usernameError" class="invalid-feedback bg-danger rounded"></small>
-							<small id="usernameUniqueError" class="bg-danger rounded">Username
-								is already occupied</small>
+							<input th:field="*{username}" th:errorclass="is-invalid"
+								type="text" id="inputUsername" min="4" max="50"
+								class="form-control" aria-describedby="usernameHelpInline">
+							<small
+								th:if="${isUniqueUserName}" id="usernameUniqueError"
+								class="custom-invalid-feedback rounded">Username is already occupied</small>
+							<small
+								th:if="${#fields.hasErrors('username')}" id="usernameHelpInline"
+								class="invalid-feedback rounded"> Username length
+								must be between 4 and 50 characters. </small>
 						</div>
 					</div>
 
@@ -34,12 +39,14 @@
 								Name</label>
 						</div>
 						<div class="col-auto">
-							<input errorclass="is-invalid" type="text" id="inputFullName"
+							<input th:field="*{fullName}" th:errorclass="is-invalid" type="text" id="inputFullName"
 								min="4" max="50" class="form-control"
-								aria-describedby="fullNameHelpInline"> <small
+								aria-describedby="fullNameHelpInline"> 
+							<small
 								id="fullNameError"
-								class="invalid-feedback  form-text bg-danger rounded">Full
-								name length must be more than 4 characters</small>
+								class="invalid-feedback  form-text rounded"
+								th:if="${#fields.hasErrors('fullName')}">Full
+								name length must be between 4 and 50 characters.</small>
 						</div>
 					</div>
 
@@ -48,11 +55,14 @@
 							<label for="inputEmail" class="login col-form-label ">Email</label>
 						</div>
 						<div class="col-auto">
-							<input errorclass="is-invalid" type="email" id="inputEmail"
-								class="form-control"
-								aria-describedby="emailHelpInline"> <small
-								id="emailError"
-								class="invalid-feedback  form-text bg-danger rounded">Must
+							<input th:field="*{email}" th:errorclass="is-invalid" type="email" id="inputEmail"
+								class="form-control" aria-describedby="emailHelpInline">
+							 <small
+								th:if="${isUniqueEmail}" id="emailUniqueError"
+								class="custom-invalid-feedback rounded">Email is already occupied</small>
+							<small id="emailError"
+								class="invalid-feedback  form-text rounded"
+								th:if="${#fields.hasErrors('email')}">Must
 								be valid email</small>
 						</div>
 					</div>
@@ -61,10 +71,11 @@
 							<label for="inputAge" class="login col-form-label">Age</label>
 						</div>
 						<div class="col-auto">
-							<input errorclass="is-invalid" type="number" id="inputAge"
+							<input th:field="*{age}" th:errorclass="is-invalid" type="number" id="inputAge"
 								class="form-control" min="0" max="90"
-								aria-describedby="ageHelpInline"> <small id="ageError"
-								class="invalid-feedback  form-text bg-danger rounded">Must
+								aria-describedby="ageHelpInline"> 
+							<small th:if="${#fields.hasErrors('age')}" id="ageError"
+								class="invalid-feedback  form-text rounded">Must
 								be valid age</small>
 						</div>
 					</div>
@@ -73,11 +84,12 @@
 							<label for="inputPassword" class="login col-form-label ">Password</label>
 						</div>
 						<div class="col-auto">
-							<input name="password" errorclass="is-invalid" type="password"
+							<input th:field="*{password}" name="password" th:errorclass="is-invalid" type="password"
 								id="inputPassword" min="4" max="50" class="form-control"
-								aria-describedby="passwordHelpInline"> <small
+								aria-describedby="passwordHelpInline"> 
+							<small th:if="${#fields.hasErrors('password')}"
 								id="passwordError"
-								class="invalid-feedback  form-text bg-danger rounded">
+								class="invalid-feedback  form-text rounded">
 								Password length must be between 4 and 50 characters and
 								passwords should match. </small>
 						</div>
@@ -89,12 +101,13 @@
 								Password</label>
 						</div>
 						<div class="col-auto">
-							<input name="confirmPassword" errorclass="is-invalid"
+							<input th:field="*{confirmPassword}"  name="confirmPassword" th:errorclass="is-invalid"
 								type="password" min="4" max="50" id="inputConfirmPassword"
 								class="form-control"
-								aria-describedby="confirmPasswordHelpInline"> <small
+								aria-describedby="confirmPasswordHelpInline"> 
+							<small th:if="${#fields.hasErrors('confirmPassword')}"
 								id="confirmPasswordError"
-								class="invalid-feedback  form-text bg-danger rounded">
+								class="invalid-feedback  form-text rounded">
 								Password length must be between 4 and 50 characters and
 								passwords should match. </small>
 						</div>
