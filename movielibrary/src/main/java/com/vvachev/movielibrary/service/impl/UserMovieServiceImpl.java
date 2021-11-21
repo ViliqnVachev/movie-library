@@ -28,7 +28,8 @@ public class UserMovieServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found!"));
+				.orElseThrow(
+						() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 		return convertToUserDetails(user);
 	}
 
@@ -37,7 +38,8 @@ public class UserMovieServiceImpl implements UserDetailsService {
 				.map(r -> new SimpleGrantedAuthority("ROLE_" + r.getRole().name())).collect(Collectors.toList());
 
 		// User is the spring implementation of UserDetails interface.
-		return new User(userEntity.getUsername(), userEntity.getPassword(), auhtorities);
+		return new User(userEntity.getUsername(), userEntity.getPassword(), userEntity.isActive(), true, true, true,
+				auhtorities);
 	}
 
 }

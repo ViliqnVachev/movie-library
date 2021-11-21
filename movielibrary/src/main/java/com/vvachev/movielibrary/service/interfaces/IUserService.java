@@ -1,5 +1,7 @@
 package com.vvachev.movielibrary.service.interfaces;
 
+import javax.management.relation.RoleNotFoundException;
+
 import com.vvachev.movielibrary.model.service.UserServiceModel;
 
 public interface IUserService {
@@ -8,7 +10,7 @@ public interface IUserService {
 
 	boolean isUniqueName(String username);
 
-	boolean register(UserServiceModel map);
+	UserServiceModel register(UserServiceModel map) throws RoleNotFoundException;
 
 	boolean isUniqueEmail(String email);
 

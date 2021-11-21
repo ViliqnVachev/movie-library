@@ -1,9 +1,13 @@
 package com.vvachev.movielibrary.web;
 
+import javax.management.relation.RoleNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,6 +21,7 @@ import com.vvachev.movielibrary.model.binding.RegisterUserBinding;
 import com.vvachev.movielibrary.model.service.UserServiceModel;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
+import com.vvachev.movielibrary.web.events.RegistrationCreateEvent;
 
 @Controller
 @RequestMapping(AppConstants.UserConfiguration.BASE_PATH)
@@ -24,11 +29,13 @@ public class UserController {
 
 	private final IUserService userService;
 	private final ModelMapper mapper;
+	private final ApplicationEventPublisher eventPublisher;
 
 	@Autowired
-	public UserController(IUserService userService, ModelMapper mapper) {
+	public UserController(IUserService userService, ModelMapper mapper, ApplicationEventPublisher eventPublisher) {
 		this.userService = userService;
 		this.mapper = mapper;
+		this.eventPublisher = eventPublisher;
 	}
 
 	@GetMapping(AppConstants.UserConfiguration.REGISTER_PATH)
@@ -38,7 +45,7 @@ public class UserController {
 
 	@PostMapping(AppConstants.UserConfiguration.REGISTER_PATH)
 	public String register(@Valid RegisterUserBinding registerUserBinding, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
 		if (bindingResult.hasErrors()
 				|| !registerUserBinding.getPassword().equals(registerUserBinding.getConfirmPassword())) {
@@ -62,9 +69,14 @@ public class UserController {
 			return "redirect:/users/register";
 		}
 
-		boolean isRegistered = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
-		if (!isRegistered) {
-			// TODO: throw error
+		UserServiceModel registeredUser;
+		try {
+			registeredUser = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
+			ApplicationEvent event = new RegistrationCreateEvent(this, registeredUser);
+			eventPublisher.publishEvent(event);
+		} catch (RoleNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return "redirect:login";

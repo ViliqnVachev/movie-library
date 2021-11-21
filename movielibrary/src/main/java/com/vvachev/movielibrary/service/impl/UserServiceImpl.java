@@ -2,6 +2,8 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.util.Set;
 
+import javax.management.relation.RoleNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -69,12 +71,10 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean register(UserServiceModel userServiceModel) {
+	public UserServiceModel register(UserServiceModel userServiceModel) throws RoleNotFoundException {
 
-		RoleEntity role = roleRepositoy.findByRole(RoleEnum.USER).orElse(null);
-		if (role == null) {
-			return false;
-		}
+		RoleEntity role = roleRepositoy.findByRole(RoleEnum.USER).orElseThrow(
+				() -> new RoleNotFoundException(String.format("Role with name %s not found!", RoleEnum.USER.name())));
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUsername(userServiceModel.getUsername());
@@ -86,7 +86,7 @@ public class UserServiceImpl implements IUserService {
 		userEntity.setRoles(Set.of(role));
 
 		userRepository.save(userEntity);
-		return true;
+		return mapper.map(userEntity, UserServiceModel.class);
 	}
 
 }
