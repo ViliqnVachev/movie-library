@@ -33,11 +33,11 @@ public class UserEntity extends BaseEntity {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<RoleEntity> roles;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
 	private Set<MovieEntity> likedMovies;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "dislikes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
 	private Set<MovieEntity> dislikedMovies;
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.vvachev.movielibrary.model.entity.MovieEntity;
 import com.vvachev.movielibrary.model.service.MovieServiceModel;
+import com.vvachev.movielibrary.model.view.MovieDetailsView;
 
 public interface IMovieService {
 	boolean isUniqueTitle(String title);
@@ -14,4 +15,8 @@ public interface IMovieService {
 	MovieEntity findByTitle(String movieTitle);
 
 	List<MovieServiceModel> getUseresMovies(String username);
+
+	MovieDetailsView findById(Long id, String name);
+
+	void deleteOffer(Long id);
 }

@@ -2,6 +2,7 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,12 @@ import org.springframework.stereotype.Service;
 import com.vvachev.movielibrary.model.entity.CategoryEntity;
 import com.vvachev.movielibrary.model.entity.MovieEntity;
 import com.vvachev.movielibrary.model.entity.PictureEntity;
+import com.vvachev.movielibrary.model.entity.RoleEntity;
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
+import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.model.service.MovieServiceModel;
+import com.vvachev.movielibrary.model.view.MovieDetailsView;
 import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
 import com.vvachev.movielibrary.service.interfaces.IMovieService;
@@ -81,10 +85,87 @@ public class MovieServiceImpl implements IMovieService {
 	public List<MovieServiceModel> getUseresMovies(String username) {
 		UserEntity userEntity = userService.findByUsername(username);
 
-		List<MovieServiceModel> usersMovies = userEntity.getMovies().stream()
-				.map(movEnt -> convertToServiceModel(movEnt, username)).collect(Collectors.toList());
+		List<MovieServiceModel> usersMovies = userEntity.getMovies().stream().map(movEnt -> {
+			MovieServiceModel model = convertToServiceModel(movEnt, username);
+			model.setRaiting(calculateRating(movEnt));
+			return model;
+		}).collect(Collectors.toList());
 
 		return usersMovies;
+	}
+
+	@Override
+	public MovieDetailsView findById(Long id, String username) {
+		MovieDetailsView view = movieRepository.findById(id).map(movEnt -> mapDetailsView(movEnt, username))
+				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
+		return view;
+	}
+
+	@Override
+	public void deleteOffer(Long id) {
+		MovieEntity entity = movieRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
+		Set<PictureEntity> pictures = entity.getPictures();
+		pictureService.deletePicture(pictures.iterator().next().getPublicId());
+		movieRepository.deleteById(id);
+
+	}
+
+	private boolean canDelete(String username, Long id) {
+		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
+		UserEntity caller = userService.findByUsername(username);
+
+		if (movieOpt.isEmpty()) {
+			return false;
+		}
+		MovieEntity movieEntity = movieOpt.get();
+
+		return isAdmin(caller) || movieEntity.getAuthor().getUsername().equals(username);
+	}
+
+	private MovieDetailsView mapDetailsView(MovieEntity movie, String currentUser) {
+		MovieDetailsView view = mapper.map(movie, MovieDetailsView.class);
+		view.setCanVote(canVote(currentUser, movie.getId()));
+		view.setRaiting(calculateRating(movie));
+		return view;
+	}
+
+	private int calculateRating(MovieEntity movie) {
+		int likes = movie.getLikes().size();
+		int dislikes = movie.getDislikes().size();
+
+		return likes - dislikes;
+	}
+
+	private boolean canVote(String currentUser, Long id) {
+		if (isOwner(currentUser, id)) {
+			return false;
+		}
+		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
+		if (movieOpt.isEmpty()) {
+			return false;
+		}
+		UserEntity caller = userService.findByUsername(currentUser);
+		if (caller.getLikedMovies().contains(movieOpt.get()) || caller.getDislikedMovies().contains(movieOpt.get())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isOwner(String username, Long id) {
+		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
+
+		if (movieOpt.isEmpty()) {
+			return false;
+		}
+		MovieEntity movieEntity = movieOpt.get();
+
+		return movieEntity.getAuthor().getUsername().equals(username);
+
+	}
+
+	private boolean isAdmin(UserEntity user) {
+		return user.getRoles().stream().map(RoleEntity::getRole).anyMatch(r -> r == RoleEnum.ADMIN);
 	}
 
 	private CategoryEntity convertToEntity(CategoryEnum name) {
@@ -101,4 +182,5 @@ public class MovieServiceImpl implements IMovieService {
 
 		return movieServiceModel;
 	}
+
 }

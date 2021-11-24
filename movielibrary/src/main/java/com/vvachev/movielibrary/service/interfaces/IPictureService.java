@@ -11,4 +11,6 @@ public interface IPictureService {
 	PictureEntity uploadPicture(MultipartFile multipartFile, String username, String movieTitle)
 			throws IOException;
 
+	void deletePicture(String publicId);
+
 }

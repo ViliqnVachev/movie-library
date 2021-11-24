@@ -34,6 +34,14 @@ public final class AppConstants {
 		public static final String BASE_PATH = "/movies";
 
 		public static final String ADD_PATH = "/add";
+
+		public static final String MY_MOVIES_PATH = "/mymovies";
+
+		public static final String DETAILS_PATH = "/details/{id}";
+
+		public static final String DELETE_PATH = "/delete/{id}";
+
+		public static final String YOUTUBE_PREFIX = "https://www.youtube.com/embed/";
 	}
 
 }

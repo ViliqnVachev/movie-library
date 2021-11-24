@@ -1,19 +1,45 @@
 package com.vvachev.movielibrary.model.view;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 
 public class MovieViewModel {
 
+	private Long id;
 	private String title;
-	private LocalDate releaseDate;
+	private String releaseDate;
 	private Set<CategoryEnum> categories;
-	private String user;
+	private String author;
 	private double raiting;
+	private String pictureUrl;
+	private boolean canDelete;
 
 	public MovieViewModel() {
+	}
+
+	public boolean isCanDelete() {
+		return canDelete;
+	}
+
+	public void setCanDelete(boolean canDelete) {
+		this.canDelete = canDelete;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
 	}
 
 	public String getTitle() {
@@ -24,11 +50,11 @@ public class MovieViewModel {
 		this.title = title;
 	}
 
-	public LocalDate getReleaseDate() {
+	public String getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(LocalDate releaseDate) {
+	public void setReleaseDate(String releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 
@@ -40,12 +66,12 @@ public class MovieViewModel {
 		this.categories = categories;
 	}
 
-	public String getUser() {
-		return user;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 	public double getRaiting() {

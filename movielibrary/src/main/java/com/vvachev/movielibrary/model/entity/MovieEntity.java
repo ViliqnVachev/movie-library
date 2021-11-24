@@ -3,6 +3,7 @@ package com.vvachev.movielibrary.model.entity;
 import java.time.LocalDate;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.vvachev.movielibrary.utils.AppConstants;
 
 @Entity
 @Table(name = "movies")
@@ -33,13 +36,13 @@ public class MovieEntity extends BaseEntity {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<CategoryEntity> categories;
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<PictureEntity> pictures;
 
-	@ManyToMany(mappedBy = "likedMovies")
+	@ManyToMany(mappedBy = "likedMovies", fetch = FetchType.EAGER)
 	private Set<UserEntity> likes;
 
-	@ManyToMany(mappedBy = "dislikedMovies")
+	@ManyToMany(mappedBy = "dislikedMovies", fetch = FetchType.EAGER)
 	private Set<UserEntity> dislikes;
 
 	public MovieEntity() {
@@ -82,7 +85,7 @@ public class MovieEntity extends BaseEntity {
 	}
 
 	public void setVideoUrl(String videoUrl) {
-		this.videoUrl = videoUrl;
+		this.videoUrl = AppConstants.MovieConfiguration.YOUTUBE_PREFIX + videoUrl;
 	}
 
 	public LocalDate getReleaseDate() {

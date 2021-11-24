@@ -14,22 +14,22 @@
 	<main>
 		<div class="container">
 			<div class="row justify-content-center">
-				<div
+				<div th:object="${movie}"
 					class="col-12 movie card col-sm-12 col-md-12 justify-content-center text-center col-lg-10 m-2 p-0 recent">
 					<iframe class="embed-responsive-item"
-						src="https://www.youtube.com/embed/NV-8t8_X-CU"></iframe>
+						th:src="*{videoUrl}"></iframe>
 				</div>
 			</div>
 		</div>
 		<br> <br>
 		<div class="container">
-			<div class="row justify-content-center">
+			<div th:object="${movie}" class="row justify-content-center">
 				<div
 					class="col-12 movie card col-sm-12 col-md-12 justify-content-center text-center col-lg-10 m-2 p-0 recent">
 					<section class="resume text-center">
-						<h4>Title:</h4>
+						<h4 th:text="| Title: *{title}|">Title:</h4>
 						<p id="resume">Resume:</p>
-						<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+						<p th:text="*{resume}">Lorem, ipsum dolor sit amet consectetur adipisicing elit.
 							Recusandae eveniet ducimus eligendi praesentium vero non ea!
 							Corporis exercitationem provident eveniet ut molestias
 							dignissimos nobis eius vero, facere dolorum reprehenderit atque.
@@ -38,9 +38,12 @@
 							quaerat quia ipsa perspiciatis nemo vero recusandae temporibus
 							minus deserunt unde eveniet?</p>
 						<div class="likes">
-							<a class="button" href="/like/${book._id}">Like</a> <a
-								class="button" href="/like/${book._id}">Dislike</a> <img
-								class="hearts" src="/images/heart.png"> <span
+						<th:block th:if="*{canVote}">
+							<a class="button" href="/like/${book._id}">Like</a> 
+							<a class="button" href="/like/${book._id}">Dislike</a> <img
+								class="hearts" src="/images/heart.png"> 
+						</th:block>
+						   <span
 								id="total-likes">Raiting: 0</span>
 						</div>
 					</section>

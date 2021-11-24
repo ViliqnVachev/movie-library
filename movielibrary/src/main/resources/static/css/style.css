@@ -104,3 +104,9 @@ input.delete{
     width: 40px;
     height: 40px;
 }
+img.card-img-top{
+    border-radius: 10px 10px;
+}
+div.card-body.buttons-wrapper{
+	display: flex;
+}

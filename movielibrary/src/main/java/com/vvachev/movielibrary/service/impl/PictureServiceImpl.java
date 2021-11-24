@@ -53,4 +53,10 @@ public class PictureServiceImpl implements IPictureService {
 
 		return pictureRepository.save(pictureEntity);
 	}
+
+	@Override
+	public void deletePicture(String publicId) {
+		cloudinaryServiceImpl.delete(publicId);
+
+	}
 }
