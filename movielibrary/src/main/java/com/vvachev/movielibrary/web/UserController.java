@@ -61,17 +61,17 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("registerUserBinding", registerUserBinding).addFlashAttribute(
 					"org.springframework.validation.BindingResult.registerUserBinding", bindingResult);
 			if (!isUniqueName) {
-				redirectAttributes.addFlashAttribute("isUniqueUserName", true);
+				redirectAttributes.addFlashAttribute("isNotUniqueUserName", true);
 			}
 			if (!isUniequeEmail) {
-				redirectAttributes.addFlashAttribute("isUniqueEmail", true);
+				redirectAttributes.addFlashAttribute("isNotUniqueEmail", true);
 			}
 			return "redirect:/users/register";
 		}
 
-		UserServiceModel registeredUser;
 		try {
-			registeredUser = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
+			UserServiceModel registeredUser = userService
+					.register(mapper.map(registerUserBinding, UserServiceModel.class));
 			ApplicationEvent event = new RegistrationCreateEvent(this, registeredUser);
 			eventPublisher.publishEvent(event);
 		} catch (RoleNotFoundException e) {

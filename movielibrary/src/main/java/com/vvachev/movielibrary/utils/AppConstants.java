@@ -2,9 +2,11 @@ package com.vvachev.movielibrary.utils;
 
 public final class AppConstants {
 
-	public static final String INDEX = "index";
+	public static final String INDEX_VIEW = "index";
 
-	public static final String HOME = "home";
+	public static final String HOME_VIEW = "home";
+
+	public static final String MOVIE_ADD_VIEW = "movie-add";
 
 	public static final String HOME_PATH = "/home";
 
@@ -25,7 +27,13 @@ public final class AppConstants {
 		public static final String REGISTER = "register";
 
 		public static final String LOGIN = "login";
+	}
 
+	public static final class MovieConfiguration {
+
+		public static final String BASE_PATH = "/movies";
+
+		public static final String ADD_PATH = "/add";
 	}
 
 }

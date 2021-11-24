@@ -2,6 +2,8 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.util.List;
 
+import javax.management.relation.RoleNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,14 @@ public class RoleServiceImpl implements IRoleService {
 		}
 	}
 
+	@Override
+	public RoleEntity findByRole(RoleEnum role) throws RoleNotFoundException {
+		return roleRepository.findByRole(role).orElseThrow(
+				() -> new RoleNotFoundException(String.format("Role with name %s not found!", RoleEnum.USER.name())));
+	}
+
 	private RoleEntity convertToEntity(RoleServiceModel model) {
 		return mapper.map(model, RoleEntity.class);
 	}
+
 }

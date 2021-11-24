@@ -10,11 +10,11 @@ public class HomeController {
 
 	@GetMapping
 	public String index() {
-		return AppConstants.INDEX;
+		return AppConstants.INDEX_VIEW;
 	}
 
 	@GetMapping(AppConstants.HOME_PATH)
 	public String home() {
-		return AppConstants.HOME;
+		return AppConstants.HOME_VIEW;
 	}
 }

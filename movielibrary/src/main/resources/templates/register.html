@@ -24,7 +24,7 @@
 								type="text" id="inputUsername" min="4" max="50"
 								class="form-control" aria-describedby="usernameHelpInline">
 							<small
-								th:if="${isUniqueUserName}" id="usernameUniqueError"
+								th:if="${isNotUniqueUserName}" id="usernameUniqueError"
 								class="custom-invalid-feedback rounded">Username is already occupied</small>
 							<small
 								th:if="${#fields.hasErrors('username')}" id="usernameHelpInline"
@@ -58,7 +58,7 @@
 							<input th:field="*{email}" th:errorclass="is-invalid" type="email" id="inputEmail"
 								class="form-control" aria-describedby="emailHelpInline">
 							 <small
-								th:if="${isUniqueEmail}" id="emailUniqueError"
+								th:if="${isNotUniqueEmail}" id="emailUniqueError"
 								class="custom-invalid-feedback rounded">Email is already occupied</small>
 							<small id="emailError"
 								class="invalid-feedback  form-text rounded"

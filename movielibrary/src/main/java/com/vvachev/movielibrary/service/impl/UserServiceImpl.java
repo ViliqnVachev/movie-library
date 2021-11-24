@@ -6,6 +6,7 @@ import javax.management.relation.RoleNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ import com.vvachev.movielibrary.model.entity.RoleEntity;
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.model.service.UserServiceModel;
-import com.vvachev.movielibrary.repository.RoleRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
+import com.vvachev.movielibrary.service.interfaces.IRoleService;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
 
@@ -24,22 +25,22 @@ public class UserServiceImpl implements IUserService {
 	private final UserRepository userRepository;
 	private final ModelMapper mapper;
 	private final PasswordEncoder passwordEncoder;
-	private final RoleRepository roleRepositoy;
+	private final IRoleService roleService;
 
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, ModelMapper mapper, PasswordEncoder passwordEncoder,
-			RoleRepository roleRepositoy) {
+			IRoleService roleService) {
 		this.userRepository = userRepository;
 		this.mapper = mapper;
 		this.passwordEncoder = passwordEncoder;
-		this.roleRepositoy = roleRepositoy;
+		this.roleService = roleService;
 	}
 
 	@Override
-	public void initUsers() {
+	public void initUsers() throws RoleNotFoundException {
 		if (this.userRepository.count() == 0) {
-			RoleEntity adminRole = roleRepositoy.findByRole(RoleEnum.ADMIN).orElse(null);
-			RoleEntity userRole = roleRepositoy.findByRole(RoleEnum.USER).orElse(null);
+			RoleEntity adminRole = roleService.findByRole(RoleEnum.ADMIN);
+			RoleEntity userRole = roleService.findByRole(RoleEnum.USER);
 
 			UserEntity admin = new UserEntity();
 			admin.setUsername(AppConstants.UserConfiguration.ADMIN);
@@ -74,8 +75,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserServiceModel register(UserServiceModel userServiceModel) throws RoleNotFoundException {
 
-		RoleEntity role = roleRepositoy.findByRole(RoleEnum.USER).orElseThrow(
-				() -> new RoleNotFoundException(String.format("Role with name %s not found!", RoleEnum.USER.name())));
+		RoleEntity role = roleService.findByRole(RoleEnum.USER);
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUsername(userServiceModel.getUsername());
@@ -88,6 +88,12 @@ public class UserServiceImpl implements IUserService {
 
 		userRepository.save(userEntity);
 		return mapper.map(userEntity, UserServiceModel.class);
+	}
+
+	@Override
+	public UserEntity findByUsername(String username) {
+		return userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 	}
 
 }

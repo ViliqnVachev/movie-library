@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,12 @@ public class CategoryServiceImpl implements ICategoryService {
 			}).collect(Collectors.toList());
 			repo.saveAll(categories);
 		}
+	}
+
+	@Override
+	public CategoryEntity findByCategoryName(CategoryEnum name) {
+		return repo.findByName(name).orElseThrow(
+				() -> new EntityNotFoundException(String.format("Category with name %s not found!", name)));
 	}
 
 	private CategoryEntity convertToEntity(CategoryServiceModel model) {

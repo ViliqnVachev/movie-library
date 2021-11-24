@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.entity;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,12 +25,12 @@ public class MovieEntity extends BaseEntity {
 	private String videoUrl;
 
 	@Column(nullable = false)
-	private Instant releaseDate;
+	private LocalDate releaseDate;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	private UserEntity author;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<CategoryEntity> categories;
 
 	@OneToMany(mappedBy = "movie", fetch = FetchType.EAGER)
@@ -85,11 +85,11 @@ public class MovieEntity extends BaseEntity {
 		this.videoUrl = videoUrl;
 	}
 
-	public Instant getReleaseDate() {
+	public LocalDate getReleaseDate() {
 		return releaseDate;
 	}
 
-	public void setReleaseDate(Instant releaseDate) {
+	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
 	}
 

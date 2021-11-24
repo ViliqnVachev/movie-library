@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -43,7 +44,22 @@ public class UserEntity extends BaseEntity {
 	@Column
 	private boolean isActive;
 
+	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+	private Set<MovieEntity> movies;
+
 	public UserEntity() {
+	}
+
+	public Set<MovieEntity> getMovies() {
+		return movies;
+	}
+
+	public void setMovies(Set<MovieEntity> movies) {
+		this.movies = movies;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public boolean isActive() {
