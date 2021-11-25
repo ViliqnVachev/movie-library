@@ -42,9 +42,11 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public CategoryEntity findByCategoryName(CategoryEnum name) {
-		return repo.findByName(name).orElseThrow(
+	public CategoryServiceModel findByCategoryName(CategoryEnum name) {
+		CategoryEntity categoryEntiy = repo.findByName(name).orElseThrow(
 				() -> new EntityNotFoundException(String.format("Category with name %s not found!", name)));
+
+		return mapper.map(categoryEntiy, CategoryServiceModel.class);
 	}
 
 	private CategoryEntity convertToEntity(CategoryServiceModel model) {

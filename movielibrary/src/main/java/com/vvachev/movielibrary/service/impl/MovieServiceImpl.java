@@ -10,6 +10,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.vvachev.movielibrary.model.entity.CategoryEntity;
@@ -20,30 +21,34 @@ import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.model.service.MovieServiceModel;
+import com.vvachev.movielibrary.model.service.PictureServiceModel;
 import com.vvachev.movielibrary.model.view.MovieDetailsView;
 import com.vvachev.movielibrary.repository.MovieRepository;
+import com.vvachev.movielibrary.repository.PictureRepository;
+import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
 import com.vvachev.movielibrary.service.interfaces.IMovieService;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
-import com.vvachev.movielibrary.service.interfaces.IUserService;
 
 @Service
 public class MovieServiceImpl implements IMovieService {
 
 	private final MovieRepository movieRepository;
 	private final ModelMapper mapper;
-	private final IUserService userService;
 	private final ICategoryService categoryService;
 	private final IPictureService pictureService;
+	private final UserRepository userRepository;
+	private final PictureRepository pictureRepository;
 
 	@Autowired
-	public MovieServiceImpl(MovieRepository movieRepository, ModelMapper mapper, IUserService userRepository,
-			CloudinaryServiceImpl cloudinaryService, ICategoryService categoryService, IPictureService pictureService) {
+	public MovieServiceImpl(MovieRepository movieRepository, ModelMapper mapper, ICategoryService categoryService,
+			IPictureService pictureService, UserRepository userRepository, PictureRepository pictureRepository) {
 		this.movieRepository = movieRepository;
 		this.mapper = mapper;
-		this.userService = userRepository;
 		this.categoryService = categoryService;
 		this.pictureService = pictureService;
+		this.userRepository = userRepository;
+		this.pictureRepository = pictureRepository;
 	}
 
 	@Override
@@ -57,18 +62,20 @@ public class MovieServiceImpl implements IMovieService {
 
 	@Override
 	public void createMovie(MovieServiceModel movieServiceModel, String username) throws IOException {
-		UserEntity userEntity = userService.findByUsername(username);
-		Set<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream().map(cat -> convertToEntity(cat))
-				.collect(Collectors.toSet());
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		Set<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream()
+				.map(cat -> convertToEntity(cat)).collect(Collectors.toSet());
 
 		MovieEntity movieEntity = mapper.map(movieServiceModel, MovieEntity.class);
 		movieEntity.setAuthor(userEntity);
 		movieEntity.setCategories(categoryEntity);
-
 		movieEntity = movieRepository.save(movieEntity);
 
-		PictureEntity pictureEntity = pictureService.uploadPicture(movieServiceModel.getPicture(), username,
+		PictureServiceModel pictureModel = pictureService.uploadPicture(movieServiceModel.getPicture(), username,
 				movieServiceModel.getTitle());
+		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId()).orElseThrow(
+				() -> new EntityNotFoundException(String.format("User with name %s not found!", username)));
 
 		movieEntity.setPictures(Set.of(pictureEntity));
 
@@ -83,7 +90,8 @@ public class MovieServiceImpl implements IMovieService {
 
 	@Override
 	public List<MovieServiceModel> getUseresMovies(String username) {
-		UserEntity userEntity = userService.findByUsername(username);
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 
 		List<MovieServiceModel> usersMovies = userEntity.getMovies().stream().map(movEnt -> {
 			MovieServiceModel model = convertToServiceModel(movEnt, username);
@@ -112,7 +120,8 @@ public class MovieServiceImpl implements IMovieService {
 
 	private boolean canDelete(String username, Long id) {
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
-		UserEntity caller = userService.findByUsername(username);
+		UserEntity caller = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 
 		if (movieOpt.isEmpty()) {
 			return false;
@@ -144,7 +153,8 @@ public class MovieServiceImpl implements IMovieService {
 		if (movieOpt.isEmpty()) {
 			return false;
 		}
-		UserEntity caller = userService.findByUsername(currentUser);
+		UserEntity caller = userRepository.findByUsername(currentUser).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", currentUser)));
 		if (caller.getLikedMovies().contains(movieOpt.get()) || caller.getDislikedMovies().contains(movieOpt.get())) {
 			return false;
 		}
@@ -168,7 +178,7 @@ public class MovieServiceImpl implements IMovieService {
 	}
 
 	private CategoryEntity convertToEntity(CategoryEnum name) {
-		return categoryService.findByCategoryName(name);
+		return mapper.map(categoryService.findByCategoryName(name), CategoryEntity.class);
 	}
 
 	private MovieServiceModel convertToServiceModel(MovieEntity movieEntity, String username) {

@@ -2,6 +2,8 @@ package com.vvachev.movielibrary.model.service;
 
 public class PictureServiceModel {
 
+	private Long id;
+
 	private String title;
 
 	private String publicId;
@@ -9,6 +11,14 @@ public class PictureServiceModel {
 	private String url;
 
 	public PictureServiceModel() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getTitle() {

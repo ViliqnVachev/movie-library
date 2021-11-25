@@ -2,7 +2,6 @@ package com.vvachev.movielibrary.service.interfaces;
 
 import javax.management.relation.RoleNotFoundException;
 
-import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.service.UserServiceModel;
 
 public interface IUserService {
@@ -15,7 +14,7 @@ public interface IUserService {
 
 	boolean isUniqueEmail(String email);
 
-	UserEntity findByUsername(String username);
+	UserServiceModel findByUsername(String username);
 
 	UserServiceModel getCurrentUser(String username);
 

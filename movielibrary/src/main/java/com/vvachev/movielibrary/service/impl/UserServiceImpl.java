@@ -40,8 +40,8 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void initUsers() throws RoleNotFoundException {
 		if (this.userRepository.count() == 0) {
-			RoleEntity adminRole = roleService.findByRole(RoleEnum.ADMIN);
-			RoleEntity userRole = roleService.findByRole(RoleEnum.USER);
+			RoleEntity adminRole = mapper.map(roleService.findByRole(RoleEnum.ADMIN), RoleEntity.class);
+			RoleEntity userRole = mapper.map(roleService.findByRole(RoleEnum.USER), RoleEntity.class);
 
 			UserEntity admin = new UserEntity();
 			admin.setUsername(AppConstants.UserConfiguration.ADMIN);
@@ -76,7 +76,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserServiceModel register(UserServiceModel userServiceModel) throws RoleNotFoundException {
 
-		RoleEntity role = roleService.findByRole(RoleEnum.USER);
+		RoleEntity role = mapper.map(roleService.findByRole(RoleEnum.USER), RoleEntity.class);
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setUsername(userServiceModel.getUsername());
@@ -92,14 +92,17 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserEntity findByUsername(String username) {
-		return userRepository.findByUsername(username).orElseThrow(
+	public UserServiceModel findByUsername(String username) {
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+
+		return mapper.map(userEntity, UserServiceModel.class);
 	}
 
 	@Override
 	public UserServiceModel getCurrentUser(String username) {
-		UserEntity userEntity = findByUsername(username);
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 		UserServiceModel model = mapper.map(userEntity, UserServiceModel.class);
 		model.setMovies(userEntity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
 		return model;

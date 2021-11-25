@@ -40,9 +40,11 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	@Override
-	public RoleEntity findByRole(RoleEnum role) throws RoleNotFoundException {
-		return roleRepository.findByRole(role).orElseThrow(
+	public RoleServiceModel findByRole(RoleEnum role) throws RoleNotFoundException {
+		RoleEntity roleEntity = roleRepository.findByRole(role).orElseThrow(
 				() -> new RoleNotFoundException(String.format("Role with name %s not found!", RoleEnum.USER.name())));
+
+		return mapper.map(roleEntity, RoleServiceModel.class);
 	}
 
 	private RoleEntity convertToEntity(RoleServiceModel model) {
