@@ -8,8 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vvachev.movielibrary.model.binding.RegisterUserBinding;
 import com.vvachev.movielibrary.model.service.UserServiceModel;
+import com.vvachev.movielibrary.model.view.UserViewModel;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
 import com.vvachev.movielibrary.web.events.RegistrationCreateEvent;
@@ -40,7 +44,7 @@ public class UserController {
 
 	@GetMapping(AppConstants.UserConfiguration.REGISTER_PATH)
 	public String getRegister() {
-		return AppConstants.UserConfiguration.REGISTER;
+		return AppConstants.REGISTER_VIEW;
 	}
 
 	@PostMapping(AppConstants.UserConfiguration.REGISTER_PATH)
@@ -85,7 +89,7 @@ public class UserController {
 
 	@GetMapping(AppConstants.UserConfiguration.LOGIN_PATH)
 	public String login() {
-		return AppConstants.UserConfiguration.LOGIN;
+		return AppConstants.LOGIN_VIEW;
 	}
 
 	@PostMapping(AppConstants.UserConfiguration.LOGIN_ERROR_PATH)
@@ -95,6 +99,13 @@ public class UserController {
 		attributes.addFlashAttribute("bad_credentials", true);
 
 		return "redirect:/users/login";
+	}
+
+	@GetMapping(AppConstants.UserConfiguration.MYSELF_PATH)
+	public String getMyself(@AuthenticationPrincipal User user, Model model) {
+		UserViewModel view = mapper.map(userService.getCurrentUser(user.getUsername()), UserViewModel.class);
+		model.addAttribute("user", view);
+		return AppConstants.MY_PROFILE_VIEW;
 	}
 
 	@ModelAttribute

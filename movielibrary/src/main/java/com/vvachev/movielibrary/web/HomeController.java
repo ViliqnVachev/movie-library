@@ -9,12 +9,12 @@ import com.vvachev.movielibrary.utils.AppConstants;
 public class HomeController {
 
 	@GetMapping
-	public String index() {
+	public String getIndex() {
 		return AppConstants.INDEX_VIEW;
 	}
 
 	@GetMapping(AppConstants.HOME_PATH)
-	public String home() {
+	public String getHome() {
 		return AppConstants.HOME_VIEW;
 	}
 }

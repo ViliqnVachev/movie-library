@@ -1,5 +1,7 @@
 package com.vvachev.movielibrary.model.service;
 
+import java.util.Set;
+
 public class UserServiceModel extends BaseServiceModel {
 
 	private String username;
@@ -12,7 +14,17 @@ public class UserServiceModel extends BaseServiceModel {
 
 	private String email;
 
+	private Set<String> movies;
+
 	public UserServiceModel() {
+	}
+
+	public Set<String> getMovies() {
+		return movies;
+	}
+
+	public void setMovies(Set<String> movies) {
+		this.movies = movies;
 	}
 
 	public String getUsername() {

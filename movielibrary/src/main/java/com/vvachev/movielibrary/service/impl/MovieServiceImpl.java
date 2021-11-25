@@ -108,7 +108,6 @@ public class MovieServiceImpl implements IMovieService {
 		Set<PictureEntity> pictures = entity.getPictures();
 		pictureService.deletePicture(pictures.iterator().next().getPublicId());
 		movieRepository.deleteById(id);
-
 	}
 
 	private boolean canDelete(String username, Long id) {

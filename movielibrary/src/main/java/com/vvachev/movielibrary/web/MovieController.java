@@ -90,14 +90,14 @@ public class MovieController {
 			return view;
 		}).collect(Collectors.toList());
 		model.addAttribute("movies", viewModels);
-		return "my-movies";
+		return AppConstants.MY_MOVIES_VIEW;
 	}
 
 	@GetMapping(AppConstants.MovieConfiguration.DETAILS_PATH)
 	public String details(@PathVariable Long id, Model model, Principal principal) {
 		MovieDetailsView view = movieService.findById(id, principal.getName());
 		model.addAttribute("movie", view);
-		return "movie-details";
+		return AppConstants.MOVIE_DETAILS_VIEW;
 	}
 
 	@PreAuthorize("@movieService.canDelete(#principal.name, #id)")

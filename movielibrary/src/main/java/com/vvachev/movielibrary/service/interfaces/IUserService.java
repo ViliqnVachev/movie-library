@@ -17,4 +17,6 @@ public interface IUserService {
 
 	UserEntity findByUsername(String username);
 
+	UserServiceModel getCurrentUser(String username);
+
 }

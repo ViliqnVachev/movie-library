@@ -8,6 +8,16 @@ public final class AppConstants {
 
 	public static final String MOVIE_ADD_VIEW = "movie-add";
 
+	public static final String MY_MOVIES_VIEW = "my-movies";
+
+	public static final String MOVIE_DETAILS_VIEW = "movie-details";
+
+	public static final String REGISTER_VIEW = "register";
+
+	public static final String LOGIN_VIEW = "login";
+
+	public static final String MY_PROFILE_VIEW = "myprofile";
+
 	public static final String HOME_PATH = "/home";
 
 	public static class UserConfiguration {
@@ -24,9 +34,8 @@ public final class AppConstants {
 
 		public static final String LOGIN_ERROR_PATH = "/login-error";
 
-		public static final String REGISTER = "register";
+		public static final String MYSELF_PATH = "/myself";
 
-		public static final String LOGIN = "login";
 	}
 
 	public static final class MovieConfiguration {

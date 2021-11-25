@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/common::head">
+
+</head>
+
+<body background="/images/2.png">
+    <header th:replace="fragments/common::navigation"> </header>
+
+    <main>
+        <div class="container body-content">
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    <article>
+                        <header>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <h1>My profile</h1>
+                            <br>
+                        </header>
+                    </article>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <div th:object="${user}" class="col-12 movie card col-sm-12 col-md-12 justify-content-center text-left col-lg-4 m-2 p-0 recent">
+                <section class="resume text-left">
+                    <strong>
+                        <h4 th:text="|Username: *{username}|"></h4>
+                    </strong>
+                    <hr>
+                    <strong>
+                        <h4 th:text="|Full name: *{fullName}|" ></h4>
+                    </strong>
+                    <hr>
+                    <strong>
+                        <h4 th:text="|Email: *{email}|" ></h4>
+                    </strong>
+                    <hr>
+                    <strong>
+                        <h4 th:text="|Age: *{age}|"></h4>
+                    </strong>
+                    <hr>
+                    <strong>
+                        <h4>Uploaded movies:</h4>
+                    </strong>
+                    <ul>
+                        <li th:each="m : *{movies}" th:text="${m}"></li>                      
+                    </ul>
+
+                    <div class="likes">
+                        <a class="button" href="/like/${book._id}">Change password</a>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
+    </main>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+          <footer th:replace="fragments/common::footer"> </footer>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

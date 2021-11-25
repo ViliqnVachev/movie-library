@@ -1,6 +1,7 @@
 package com.vvachev.movielibrary.service.impl;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.management.relation.RoleNotFoundException;
 
@@ -94,6 +95,14 @@ public class UserServiceImpl implements IUserService {
 	public UserEntity findByUsername(String username) {
 		return userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+	}
+
+	@Override
+	public UserServiceModel getCurrentUser(String username) {
+		UserEntity userEntity = findByUsername(username);
+		UserServiceModel model = mapper.map(userEntity, UserServiceModel.class);
+		model.setMovies(userEntity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
+		return model;
 	}
 
 }

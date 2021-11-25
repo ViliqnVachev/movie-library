@@ -2,7 +2,6 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.io.IOException;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -22,16 +21,14 @@ public class PictureServiceImpl implements IPictureService {
 
 	private final CloudinaryServiceImpl cloudinaryServiceImpl;
 	private final PictureRepository pictureRepository;
-	private final ModelMapper mapper;
 	private final IUserService userService;
 	private final IMovieService movieService;
 
 	@Autowired
 	public PictureServiceImpl(CloudinaryServiceImpl cloudinaryServiceImpl, PictureRepository pictureRepository,
-			ModelMapper mapper, IUserService userService, @Lazy IMovieService movieService) {
+			IUserService userService, @Lazy IMovieService movieService) {
 		this.cloudinaryServiceImpl = cloudinaryServiceImpl;
 		this.pictureRepository = pictureRepository;
-		this.mapper = mapper;
 		this.userService = userService;
 		this.movieService = movieService;
 	}
