@@ -1,6 +1,5 @@
 package com.vvachev.movielibrary.web;
 
-import javax.management.relation.RoleNotFoundException;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vvachev.movielibrary.model.binding.ChangePasswordBindingModel;
 import com.vvachev.movielibrary.model.binding.RegisterUserBinding;
-import com.vvachev.movielibrary.model.service.UserServiceModel;
 import com.vvachev.movielibrary.model.view.UserViewModel;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
@@ -73,15 +71,9 @@ public class UserController {
 			return "redirect:/users/register";
 		}
 
-		try {
-			UserServiceModel registeredUser = userService
-					.register(mapper.map(registerUserBinding, UserServiceModel.class));
-			ApplicationEvent event = new RegistrationCreateEvent(this, registeredUser);
-			eventPublisher.publishEvent(event);
-		} catch (RoleNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ApplicationEvent event = new RegistrationCreateEvent(this, registerUserBinding.getUsername(),
+				registerUserBinding.getEmail());
+		eventPublisher.publishEvent(event);
 
 		return "redirect:login";
 

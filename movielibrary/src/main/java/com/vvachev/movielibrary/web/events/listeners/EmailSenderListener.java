@@ -24,8 +24,8 @@ public class EmailSenderListener {
 
 	@EventListener(RegistrationCreateEvent.class)
 	public void onRegistration(RegistrationCreateEvent registrationCreateEvent) {
-		emailService.sendSimpleMessage(registrationCreateEvent.getUser().getEmail(), EmailConstants.SUBJECT,
-				String.format(EmailConstants.CONTENT_TEMPLATE, registrationCreateEvent.getUser().getUsername()));
+		emailService.sendSimpleMessage(registrationCreateEvent.getEmail(), EmailConstants.SUBJECT,
+				String.format(EmailConstants.CONTENT_TEMPLATE, registrationCreateEvent.getUsername()));
 		LOGGER.info("Sending an email!");
 	}
 }

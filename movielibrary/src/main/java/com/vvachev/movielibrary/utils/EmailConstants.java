@@ -5,5 +5,5 @@ public final class EmailConstants {
 
 	public static final String SUBJECT = "Successful registration";
 
-	public static final String CONTENT_TEMPLATE = "User with name %s is uccessfully registered";
+	public static final String CONTENT_TEMPLATE = "User with name %s is successfully registered";
 }

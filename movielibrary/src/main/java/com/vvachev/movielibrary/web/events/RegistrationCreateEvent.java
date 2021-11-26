@@ -2,22 +2,23 @@ package com.vvachev.movielibrary.web.events;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.vvachev.movielibrary.model.service.UserServiceModel;
-
 public class RegistrationCreateEvent extends ApplicationEvent {
 	private static final long serialVersionUID = 7099057708183571937L;
-	private final UserServiceModel user;
+	private final String username;
+	private final String email;
 
-	public RegistrationCreateEvent(Object source, UserServiceModel user) {
+	public RegistrationCreateEvent(Object source, String username, String email) {
 		super(source);
-		this.user = user;
+		this.username = username;
+		this.email = email;
 	}
 
-	public UserServiceModel getUser() {
-		return user;
+	public String getUsername() {
+		return username;
 	}
 
-//	private final JavaMailSender mailSender;
-
+	public String getEmail() {
+		return email;
+	}
 
 }
