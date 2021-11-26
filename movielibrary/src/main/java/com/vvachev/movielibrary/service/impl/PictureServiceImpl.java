@@ -2,6 +2,8 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.io.IOException;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,6 +16,7 @@ import com.vvachev.movielibrary.model.entity.PictureEntity;
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.service.CloudinaryImage;
 import com.vvachev.movielibrary.model.service.PictureServiceModel;
+import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.repository.PictureRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IMovieService;
@@ -27,15 +30,18 @@ public class PictureServiceImpl implements IPictureService {
 	private final IMovieService movieService;
 	private final UserRepository userRepository;
 	private final ModelMapper mapper;
+	private final MovieRepository movieRepository;
 
 	@Autowired
 	public PictureServiceImpl(CloudinaryServiceImpl cloudinaryServiceImpl, PictureRepository pictureRepository,
-			@Lazy IMovieService movieService, UserRepository userRepository, ModelMapper mapper) {
+			@Lazy IMovieService movieService, UserRepository userRepository, ModelMapper mapper,
+			MovieRepository movieRepository) {
 		this.cloudinaryServiceImpl = cloudinaryServiceImpl;
 		this.pictureRepository = pictureRepository;
 		this.movieService = movieService;
 		this.userRepository = userRepository;
 		this.mapper = mapper;
+		this.movieRepository = movieRepository;
 	}
 
 	@Override
@@ -45,7 +51,8 @@ public class PictureServiceImpl implements IPictureService {
 
 		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
-		MovieEntity movieEntity = movieService.findByTitle(movieTitle);
+		MovieEntity movieEntity = movieRepository.findByTitle(movieTitle).orElseThrow(
+				() -> new EntityNotFoundException(String.format("Movie with title %s not found!", movieTitle)));
 
 		PictureEntity pictureEntity = new PictureEntity();
 		pictureEntity.setPublicId(image.getPublicId());

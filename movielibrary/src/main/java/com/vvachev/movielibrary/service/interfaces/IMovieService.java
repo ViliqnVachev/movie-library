@@ -3,7 +3,6 @@ package com.vvachev.movielibrary.service.interfaces;
 import java.io.IOException;
 import java.util.List;
 
-import com.vvachev.movielibrary.model.entity.MovieEntity;
 import com.vvachev.movielibrary.model.service.MovieServiceModel;
 import com.vvachev.movielibrary.model.view.MovieDetailsView;
 
@@ -12,7 +11,7 @@ public interface IMovieService {
 
 	void createMovie(MovieServiceModel movieServiceModel, String username) throws IOException;
 
-	MovieEntity findByTitle(String movieTitle);
+	MovieServiceModel findByTitle(String movieTitle);
 
 	List<MovieServiceModel> getUseresMovies(String username);
 
@@ -21,5 +20,9 @@ public interface IMovieService {
 	void deleteOffer(Long id);
 
 	void voteMovie(Long id, String username, boolean isLike);
+
+	List<MovieServiceModel> getTopMovies();
+
+	List<MovieServiceModel> getRecentMovies();
 
 }

@@ -61,4 +61,9 @@ public final class AppConstants {
 		public static final String YOUTUBE_PREFIX = "https://www.youtube.com/embed/";
 	}
 
+	public static final class CommentConfiguration {
+
+		public static final String BASE_PATH = "/comments";
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.vvachev.movielibrary.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -74,8 +75,9 @@ public class MovieServiceImpl implements IMovieService {
 
 		PictureServiceModel pictureModel = pictureService.uploadPicture(movieServiceModel.getPicture(), username,
 				movieServiceModel.getTitle());
-		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId()).orElseThrow(
-				() -> new EntityNotFoundException(String.format("User with name %s not found!", username)));
+		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId())
+				.orElseThrow(() -> new EntityNotFoundException(
+						String.format("Picture with id %d not found!", pictureModel.getId())));
 
 		movieEntity.setPictures(Set.of(pictureEntity));
 
@@ -83,9 +85,8 @@ public class MovieServiceImpl implements IMovieService {
 	}
 
 	@Override
-	public MovieEntity findByTitle(String movieTitle) {
-		return movieRepository.findByTitle(movieTitle).orElseThrow(
-				() -> new EntityNotFoundException(String.format("Movie with title %s not found!", movieTitle)));
+	public MovieServiceModel findByTitle(String movieTitle) {
+		return mapper.map(movieRepository.findByTitle(movieTitle), MovieServiceModel.class);
 	}
 
 	@Override
@@ -146,6 +147,37 @@ public class MovieServiceImpl implements IMovieService {
 		}
 
 		movieRepository.save(movieEntity);
+	}
+
+	@Override
+	public List<MovieServiceModel> getTopMovies() {
+		List<MovieServiceModel> movies = movieRepository.findAll().stream()
+				.sorted((a, b) -> a.getLikes().size() - b.getDislikes().size())
+				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
+		List<MovieServiceModel> topMovies = new ArrayList<>();
+		if (movies.size() < 3) {
+			return movies;
+		}
+		for (int i = 0; i < 3; i++) {
+			topMovies.add(movies.get(i));
+		}
+		return topMovies;
+	}
+
+
+	@Override
+	public List<MovieServiceModel> getRecentMovies() {
+		List<MovieServiceModel> movies = movieRepository.findAll().stream()
+				.sorted((a, b) -> a.getLikes().size() - b.getDislikes().size())
+				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
+		List<MovieServiceModel> recentMovies = new ArrayList<>();
+		if (movies.size() < 5) {
+			return movies;
+		}
+		for (int i = 0; i < 5; i++) {
+			recentMovies.add(movies.get(i));
+		}
+		return recentMovies;
 	}
 
 	private boolean canDelete(String username, Long id) {
@@ -231,6 +263,7 @@ public class MovieServiceImpl implements IMovieService {
 				.collect(Collectors.toSet());
 		movieServiceModel.setCategories(categories);
 		movieServiceModel.setAuthor(username);
+		movieServiceModel.setRaiting(calculateRating(movieEntity));
 
 		return movieServiceModel;
 	}

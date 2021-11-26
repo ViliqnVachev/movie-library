@@ -10,4 +10,5 @@ import com.vvachev.movielibrary.model.entity.MovieEntity;
 @Repository
 public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
 	Optional<MovieEntity> findByTitle(String title);
+
 }
