@@ -110,3 +110,11 @@ img.card-img-top{
 div.card-body.buttons-wrapper{
 	display: flex;
 }
+div.likes.likes-btn-wrapper{
+	display: flex;
+	justify-content: center;
+}
+span#total-likes{
+	margin-left: 5px;
+	margin-top: 5px;
+}

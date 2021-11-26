@@ -1,6 +1,7 @@
 package com.vvachev.movielibrary.model.binding;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -25,11 +26,11 @@ public class RegisterUserBinding {
 	@Positive
 	private int age;
 
-	@NotNull
+	@NotBlank
 	@Size(min = 4, max = 50)
 	private String password;
 
-	@NotNull
+	@NotBlank
 	@Size(min = 4, max = 50)
 	private String confirmPassword;
 

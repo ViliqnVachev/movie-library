@@ -108,4 +108,12 @@ public class UserServiceImpl implements IUserService {
 		return model;
 	}
 
+	@Override
+	public void changePassowrd(String newPassword, String username) {
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		userEntity.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(userEntity);
+	}
+
 }

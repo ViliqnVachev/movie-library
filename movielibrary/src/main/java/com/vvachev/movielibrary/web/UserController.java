@@ -1,7 +1,6 @@
 package com.vvachev.movielibrary.web;
 
 import javax.management.relation.RoleNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vvachev.movielibrary.model.binding.ChangePasswordBindingModel;
 import com.vvachev.movielibrary.model.binding.RegisterUserBinding;
 import com.vvachev.movielibrary.model.service.UserServiceModel;
 import com.vvachev.movielibrary.model.view.UserViewModel;
@@ -49,7 +49,7 @@ public class UserController {
 
 	@PostMapping(AppConstants.UserConfiguration.REGISTER_PATH)
 	public String register(@Valid RegisterUserBinding registerUserBinding, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, HttpServletRequest request) {
+			RedirectAttributes redirectAttributes) {
 
 		if (bindingResult.hasErrors()
 				|| !registerUserBinding.getPassword().equals(registerUserBinding.getConfirmPassword())) {
@@ -96,7 +96,7 @@ public class UserController {
 	public String failedLogin(
 			@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String username,
 			RedirectAttributes attributes) {
-		attributes.addFlashAttribute("bad_credentials", true);
+		attributes.addFlashAttribute("username", username).addFlashAttribute("bad_credentials", true);
 
 		return "redirect:/users/login";
 	}
@@ -108,8 +108,36 @@ public class UserController {
 		return AppConstants.MY_PROFILE_VIEW;
 	}
 
+	@GetMapping(AppConstants.UserConfiguration.CHANGE_PASSWORD_PATH)
+	public String getChangePassword() {
+		return AppConstants.CANGE_PASSWORD_VIEW;
+	}
+
+	@PostMapping(AppConstants.UserConfiguration.CHANGE_PASSWORD_PATH)
+	public String changePassword(ChangePasswordBindingModel changePasswordBindingModel, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
+
+		if (bindingResult.hasErrors() || !changePasswordBindingModel.getNewPassword()
+				.equals(changePasswordBindingModel.getConfirmPassword())) {
+			redirectAttributes.addFlashAttribute("changePasswordBindingModel", changePasswordBindingModel)
+					.addFlashAttribute("org.springframework.validation.BindingResult.changePasswordBindingModel",
+							bindingResult)
+					.addAttribute("isNotMatch", true);
+			return "redirect:/users/myself/change";
+		}
+
+		userService.changePassowrd(changePasswordBindingModel.getNewPassword(), user.getUsername());
+
+		return "redirect:/users/myself";
+	}
+
 	@ModelAttribute
 	public RegisterUserBinding registerUserBinding() {
 		return new RegisterUserBinding();
+	}
+
+	@ModelAttribute
+	public ChangePasswordBindingModel changePasswordBindingModel() {
+		return new ChangePasswordBindingModel();
 	}
 }

@@ -38,11 +38,17 @@
 							corporis quasi ex dolor doloremque, autem nam, fugiat, quos
 							quaerat quia ipsa perspiciatis nemo vero recusandae temporibus
 							minus deserunt unde eveniet?</p>
-						<div class="likes">
+						<div class="likes likes-btn-wrapper">
 						<th:block th:if="*{canVote}">
-							<a class="button" href="/like/${book._id}">Like</a> 
-							<a class="button" href="/like/${book._id}">Dislike</a> <img
+						<form th:method="post" th:action="@{/movies/like/{id}(id=*{id})}">
+							<button class="button" type="submit">Like</button>
+							
+						</form>
+						<form th:method="post" th:action="@{/movies/dislike/{id}(id=*{id})}">
+							<button class="button" type="submit">Dislike</button>
+							<img
 								class="hearts" src="/images/heart.png"> 
+						</form>
 						</th:block>
 						   <span
 								id="total-likes">Raiting: 0</span>

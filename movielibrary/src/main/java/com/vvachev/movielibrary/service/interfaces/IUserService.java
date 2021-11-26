@@ -18,4 +18,6 @@ public interface IUserService {
 
 	UserServiceModel getCurrentUser(String username);
 
+	void changePassowrd(String newPassword, String username);
+
 }

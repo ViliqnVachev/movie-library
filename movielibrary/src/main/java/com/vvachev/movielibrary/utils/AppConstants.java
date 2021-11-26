@@ -18,6 +18,8 @@ public final class AppConstants {
 
 	public static final String MY_PROFILE_VIEW = "myprofile";
 
+	public static final String CANGE_PASSWORD_VIEW = "change-password";
+
 	public static final String HOME_PATH = "/home";
 
 	public static class UserConfiguration {
@@ -35,6 +37,8 @@ public final class AppConstants {
 		public static final String LOGIN_ERROR_PATH = "/login-error";
 
 		public static final String MYSELF_PATH = "/myself";
+
+		public static final String CHANGE_PASSWORD_PATH = MYSELF_PATH + "/change";
 
 	}
 
