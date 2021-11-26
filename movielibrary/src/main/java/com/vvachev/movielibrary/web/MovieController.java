@@ -108,6 +108,24 @@ public class MovieController {
 		return "redirect:/movies/mymovies";
 	}
 
+	@PreAuthorize("@movieService.canVote(#principal.name, #id)")
+	@PostMapping(AppConstants.MovieConfiguration.LIKE_PATH)
+	public String likeMovie(@PathVariable Long id, Principal principal) {
+
+		movieService.voteMovie(id, principal.getName(), true);
+
+		return "redirect:/movies/details/" + id;
+	}
+
+	@PreAuthorize("@movieService.canVote(#principal.name, #id)")
+	@PostMapping(AppConstants.MovieConfiguration.DISLIKE_PATH)
+	public String dislikeMovie(@PathVariable Long id, Principal principal) {
+
+		movieService.voteMovie(id, principal.getName(), false);
+
+		return "redirect:/movies/details/" + id;
+	}
+
 	@ModelAttribute
 	public AddMovieBinding addMovieBinding() {
 		return new AddMovieBinding();

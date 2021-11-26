@@ -46,12 +46,12 @@
 						</form>
 						<form th:method="post" th:action="@{/movies/dislike/{id}(id=*{id})}">
 							<button class="button" type="submit">Dislike</button>
-							<img
-								class="hearts" src="/images/heart.png"> 
 						</form>
 						</th:block>
+						<img
+								class="hearts" src="/images/heart.png"> 
 						   <span
-								id="total-likes">Raiting: 0</span>
+								id="total-likes" th:text="|Raiting: *{raiting} |"></span>
 						</div>
 					</section>
 				</div>

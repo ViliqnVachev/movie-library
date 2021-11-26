@@ -64,8 +64,8 @@ public class MovieServiceImpl implements IMovieService {
 	public void createMovie(MovieServiceModel movieServiceModel, String username) throws IOException {
 		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
-		Set<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream()
-				.map(cat -> convertToEntity(cat)).collect(Collectors.toSet());
+		Set<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream().map(cat -> convertToEntity(cat))
+				.collect(Collectors.toSet());
 
 		MovieEntity movieEntity = mapper.map(movieServiceModel, MovieEntity.class);
 		movieEntity.setAuthor(userEntity);
@@ -118,6 +118,36 @@ public class MovieServiceImpl implements IMovieService {
 		movieRepository.deleteById(id);
 	}
 
+	@Override
+	public void voteMovie(Long id, String username, boolean isLike) {
+		MovieEntity movieEntity = movieRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
+		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+
+		if (isLike) {
+			if (movieEntity.getLikes() == null) {
+				movieEntity.setLikes(Set.of(userEntity));
+			} else {
+				Set<UserEntity> likes = movieEntity.getLikes();
+				likes.add(userEntity);
+				movieEntity.setLikes(likes);
+			}
+		}
+
+		if (!isLike) {
+			if (movieEntity.getDislikes() == null) {
+				movieEntity.setDislikes(Set.of(userEntity));
+			} else {
+				Set<UserEntity> dislikes = movieEntity.getDislikes();
+				dislikes.add(userEntity);
+				movieEntity.setDislikes(dislikes);
+			}
+		}
+
+		movieRepository.save(movieEntity);
+	}
+
 	private boolean canDelete(String username, Long id) {
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
 		UserEntity caller = userRepository.findByUsername(username).orElseThrow(
@@ -142,23 +172,36 @@ public class MovieServiceImpl implements IMovieService {
 		int likes = movie.getLikes().size();
 		int dislikes = movie.getDislikes().size();
 
-		return likes - dislikes;
+		if (likes == 0 && dislikes == 0) {
+			return 0;
+		}
+
+		return likes / (likes + dislikes) * 10;
 	}
 
 	private boolean canVote(String currentUser, Long id) {
-		if (isOwner(currentUser, id)) {
-			return false;
-		}
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
-		if (movieOpt.isEmpty()) {
+		if (isOwner(currentUser, id) || alreadyVoted(movieOpt.get(), currentUser) || movieOpt.isEmpty()) {
 			return false;
 		}
-		UserEntity caller = userRepository.findByUsername(currentUser).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", currentUser)));
-		if (caller.getLikedMovies().contains(movieOpt.get()) || caller.getDislikedMovies().contains(movieOpt.get())) {
-			return false;
-		}
+
 		return true;
+	}
+
+	private boolean alreadyVoted(MovieEntity movieEntity, String username) {
+		for (UserEntity user : movieEntity.getLikes()) {
+			if (user.getUsername().equals(username)) {
+				return true;
+			}
+		}
+
+		for (UserEntity user : movieEntity.getDislikes()) {
+			if (user.getUsername().equals(username)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private boolean isOwner(String username, Long id) {
@@ -191,5 +234,4 @@ public class MovieServiceImpl implements IMovieService {
 
 		return movieServiceModel;
 	}
-
 }

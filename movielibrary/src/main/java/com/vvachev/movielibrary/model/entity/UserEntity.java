@@ -5,8 +5,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,12 +31,10 @@ public class UserEntity extends BaseEntity {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<RoleEntity> roles;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
+	@ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
 	private Set<MovieEntity> likedMovies;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "dislikes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
+	@ManyToMany(mappedBy = "dislikes", fetch = FetchType.EAGER)
 	private Set<MovieEntity> dislikedMovies;
 
 	@Column

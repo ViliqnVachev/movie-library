@@ -19,4 +19,7 @@ public interface IMovieService {
 	MovieDetailsView findById(Long id, String name);
 
 	void deleteOffer(Long id);
+
+	void voteMovie(Long id, String username, boolean isLike);
+
 }

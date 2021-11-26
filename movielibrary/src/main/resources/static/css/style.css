@@ -74,6 +74,7 @@ section.resume{
     text-align: center;
 }
 img.hearts {
+	margin-top: 5px;
     width: 32px;
     height: 30px;
     position: relative;
