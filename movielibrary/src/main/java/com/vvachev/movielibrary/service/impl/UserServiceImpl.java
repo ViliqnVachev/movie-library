@@ -1,5 +1,6 @@
 package com.vvachev.movielibrary.service.impl;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -96,16 +97,12 @@ public class UserServiceImpl implements IUserService {
 		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
 
-		return mapper.map(userEntity, UserServiceModel.class);
+		return mapToServiceModel(userEntity);
 	}
 
 	@Override
 	public UserServiceModel getCurrentUser(String username) {
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
-		UserServiceModel model = mapper.map(userEntity, UserServiceModel.class);
-		model.setMovies(userEntity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
-		return model;
+		return findByUsername(username);
 	}
 
 	@Override
@@ -116,4 +113,35 @@ public class UserServiceImpl implements IUserService {
 		userRepository.save(userEntity);
 	}
 
+	@Override
+	public List<UserServiceModel> getAllUsers() {
+		List<UserEntity> users = userRepository.findAll();
+		return users.stream().map(user -> mapToServiceModel(user)).collect(Collectors.toList());
+	}
+
+	@Override
+	public UserServiceModel disableUser(Long id) {
+		UserEntity userEntity = userRepository.findById(id)
+				.orElseThrow(() -> new UsernameNotFoundException(String.format("User with id %d not found!", id)));
+
+		userEntity.setActive(false);
+
+		return mapToServiceModel(userRepository.save(userEntity));
+	}
+
+	public boolean isAdmin(String username) {
+		UserServiceModel user = findByUsername(username);
+		if (user.getRoles().contains(RoleEnum.ADMIN.name())) {
+			return true;
+		}
+		return false;
+	}
+
+	private UserServiceModel mapToServiceModel(UserEntity entity) {
+		UserServiceModel userServiceModel = mapper.map(entity, UserServiceModel.class);
+		Set<String> roles = entity.getRoles().stream().map(ent -> ent.getRole().name()).collect(Collectors.toSet());
+		userServiceModel.setRoles(roles);
+		userServiceModel.setMovies(entity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
+		return userServiceModel;
+	}
 }

@@ -16,7 +16,27 @@ public class UserServiceModel extends BaseServiceModel {
 
 	private Set<String> movies;
 
+	private Set<String> roles;
+
+	private boolean isActive;
+
 	public UserServiceModel() {
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
 	}
 
 	public Set<String> getMovies() {

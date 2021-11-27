@@ -19,39 +19,42 @@
 				</div>
 				<br> <br> <br> <br>
 			</div>
-			<div
-				class="col-12 movie card col-sm-12 col-md-12 justify-content-center text-left col-lg-4 m-2 p-0 recent">
-				<section class="resume text-left">
-					<strong>
-						<h4>Username:</h4>
-					</strong>
-					<hr>
-					<strong>
-						<h4>Full name:</h4>
-					</strong>
-					<hr>
-					<strong>
-						<h4>Email:</h4>
-					</strong>
-					<hr>
-					<strong>
-						<h4>Age:</h4>
-					</strong>
-					<hr>
-					<strong>
-						<h4>Uploaded movies:</h4>
-					</strong>
-					<ul>
-						<li>First</li>
-						<li>First</li>
-						<li>First</li>
-					</ul>
-
-					<div class="likes">
-						<a class="button" href="/like/${book._id}">Disable user</a>
-
+			<div class="container">
+				<div class="row">
+					<div th:each="user : ${users}" th:object="${user}"
+						class="col-12 movie col-sm-12 col-md-12 justify-content-center text-left col-lg-4 m-2 p-0 recent">
+						<section class="resume text-left">
+							<strong>
+								<h4 th:text="|Username: *{username}|"></h4>
+							</strong>
+							<hr>
+							<strong>
+								<h4 th:text="|Full name: *{fullName}|"></h4>
+							</strong>
+							<hr>
+							<strong>
+								<h4 th:text="|Email: *{email}|"></h4>
+							</strong>
+							<hr>
+							<strong>
+								<h4 th:text="|Age: *{age}|"></h4>
+							</strong>
+							<hr>
+							<strong>
+								<h4 th:text="|Active: *{isActive}|"></h4>
+							</strong>
+							<hr>
+							<strong>
+								<h4 th:text="|Uploaded movies: *{#lists.size(movies)} |"></h4>
+							</strong>
+						<th:block th:if="*{isActive}">
+							<form th:method="post" th:action="@{/users/disable/{id}(id=*{id})}">
+							<button class="button" type="submit">Disable user</button>
+						</form>
+						</th:block>	
+						</section>
 					</div>
-				</section>
+				</div>
 			</div>
 		</div>
 

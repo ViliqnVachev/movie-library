@@ -2,8 +2,7 @@ package com.vvachev.movielibrary.model.view;
 
 import java.util.List;
 
-public class MovieDetailsView {
-	private Long id;
+public class MovieDetailsView extends BaseViewModel {
 	private String videoUrl;
 	private String title;
 	private String resume;
@@ -12,14 +11,6 @@ public class MovieDetailsView {
 	private boolean canVote;
 
 	public MovieDetailsView() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public boolean isCanVote() {

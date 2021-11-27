@@ -1,5 +1,7 @@
 package com.vvachev.movielibrary.service.interfaces;
 
+import java.util.List;
+
 import javax.management.relation.RoleNotFoundException;
 
 import com.vvachev.movielibrary.model.service.UserServiceModel;
@@ -19,5 +21,9 @@ public interface IUserService {
 	UserServiceModel getCurrentUser(String username);
 
 	void changePassowrd(String newPassword, String username);
+
+	List<UserServiceModel> getAllUsers();
+
+	UserServiceModel disableUser(Long id);
 
 }

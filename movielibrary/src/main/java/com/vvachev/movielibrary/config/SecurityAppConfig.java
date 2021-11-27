@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
+
 @Configuration
 public class SecurityAppConfig extends WebSecurityConfigurerAdapter {
 
@@ -26,7 +28,9 @@ public class SecurityAppConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http//
 				.authorizeRequests().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()//
-				.antMatchers("/", "/users/login", "/users/register", "/aboute").permitAll()//
+				.antMatchers("/users/login", "/users/register").anonymous()//
+				.antMatchers("/", "/aboute").permitAll()
+				.antMatchers("/users/all", "/movies/all").hasRole(RoleEnum.ADMIN.name())
 				.antMatchers("/**").authenticated()//
 				.and()//
 				.formLogin()//

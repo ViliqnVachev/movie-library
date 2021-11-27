@@ -1,11 +1,17 @@
 package com.vvachev.movielibrary.web;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.management.relation.RoleNotFoundException;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -14,16 +20,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vvachev.movielibrary.model.binding.ChangePasswordBindingModel;
 import com.vvachev.movielibrary.model.binding.RegisterUserBinding;
+import com.vvachev.movielibrary.model.service.UserServiceModel;
 import com.vvachev.movielibrary.model.view.UserViewModel;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
-import com.vvachev.movielibrary.web.events.RegistrationCreateEvent;
+import com.vvachev.movielibrary.utils.EmailConstants;
+import com.vvachev.movielibrary.web.events.Event;
 
 @Controller
 @RequestMapping(AppConstants.UserConfiguration.BASE_PATH)
@@ -71,12 +80,17 @@ public class UserController {
 			return "redirect:/users/register";
 		}
 
-		ApplicationEvent event = new RegistrationCreateEvent(this, registerUserBinding.getUsername(),
-				registerUserBinding.getEmail());
-		eventPublisher.publishEvent(event);
-
+		UserServiceModel registeredUser;
+		try {
+			registeredUser = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
+			ApplicationEvent event = new Event(this, registeredUser.getUsername(), registeredUser.getEmail(),
+					EmailConstants.REGISTER_CONTENT_TEMPLATE);
+			eventPublisher.publishEvent(event);
+		} catch (RoleNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "redirect:login";
-
 	}
 
 	@GetMapping(AppConstants.UserConfiguration.LOGIN_PATH)
@@ -121,6 +135,25 @@ public class UserController {
 		userService.changePassowrd(changePasswordBindingModel.getNewPassword(), user.getUsername());
 
 		return "redirect:/users/myself";
+	}
+
+	@GetMapping(AppConstants.UserConfiguration.ALL_USERS_PATH)
+	public String getAllUsers(Model model, Principal principal) {
+		List<UserViewModel> users = userService.getAllUsers().stream()
+				.map(userModel -> mapper.map(userModel, UserViewModel.class)).collect(Collectors.toList());
+		model.addAttribute("users", users);
+		return AppConstants.ALL_USERS_VIEW;
+	}
+
+	@PreAuthorize("@userService.isAdmin(#principal.name)")
+	@PostMapping(AppConstants.UserConfiguration.DISABLE_USER_PATH)
+	public String disableUser(@PathVariable Long id, Principal principal) {
+
+		UserServiceModel user = userService.disableUser(id);
+		ApplicationEvent event = new Event(this, user.getUsername(), user.getEmail(),
+				EmailConstants.DISABLE_USER_CONTENT_TEMPLATE);
+		eventPublisher.publishEvent(event);
+		return "redirect:/users/all";
 	}
 
 	@ModelAttribute

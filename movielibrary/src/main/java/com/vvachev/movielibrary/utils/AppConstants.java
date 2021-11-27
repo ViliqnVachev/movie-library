@@ -20,6 +20,8 @@ public final class AppConstants {
 
 	public static final String CANGE_PASSWORD_VIEW = "change-password";
 
+	public static final String ALL_USERS_VIEW = "all-users";
+
 	public static final String HOME_PATH = "/home";
 
 	public static class UserConfiguration {
@@ -39,6 +41,10 @@ public final class AppConstants {
 		public static final String MYSELF_PATH = "/myself";
 
 		public static final String CHANGE_PASSWORD_PATH = MYSELF_PATH + "/change";
+
+		public static final String ALL_USERS_PATH = "/all";
+
+		public static final String DISABLE_USER_PATH = "/disable/{id}";
 
 	}
 

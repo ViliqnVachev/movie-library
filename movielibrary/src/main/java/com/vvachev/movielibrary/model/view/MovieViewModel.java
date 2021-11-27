@@ -4,9 +4,8 @@ import java.util.Set;
 
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 
-public class MovieViewModel {
+public class MovieViewModel extends BaseViewModel {
 
-	private Long id;
 	private String title;
 	private String releaseDate;
 	private Set<CategoryEnum> categories;
@@ -33,14 +32,6 @@ public class MovieViewModel {
 
 	public void setCanDelete(boolean canDelete) {
 		this.canDelete = canDelete;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getPictureUrl() {

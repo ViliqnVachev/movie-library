@@ -2,15 +2,24 @@ package com.vvachev.movielibrary.model.view;
 
 import java.util.Set;
 
-public class UserViewModel {
+public class UserViewModel extends BaseViewModel {
 
 	private String username;
 	private int age;
 	private String fullName;
 	private String email;
+	private boolean isActive;
 	private Set<String> movies;
 
 	public UserViewModel() {
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public String getUsername() {

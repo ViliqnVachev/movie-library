@@ -185,7 +185,7 @@ public class MovieServiceImpl implements IMovieService {
 				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
 	}
 
-	private boolean canDelete(String username, Long id) {
+	public boolean canDelete(String username, Long id) {
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
 		UserEntity caller = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
