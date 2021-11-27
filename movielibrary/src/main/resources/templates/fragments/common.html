@@ -41,11 +41,10 @@
 							class="nav-link dropdown-toggle" href="/" id="navbarDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> Admin </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="/">Action</a> <a
-									class="dropdown-item" href="/">Another action</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="/">Something else here</a>
+							<div sec:authorize="hasRole('ADMIN')" class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a sec:authorize="hasRole('ADMIN')" class="dropdown-item" href="/movies/all">All movies</a> 
+								<a sec:authorize="hasRole('ADMIN')"
+									class="dropdown-item" href="/users/all">All users</a>
 							</div></li>
 						<li class="nav-item" sec:authorize="isAuthenticated()" >
 							 <form th:action="@{/users/logout}" th:method="post">

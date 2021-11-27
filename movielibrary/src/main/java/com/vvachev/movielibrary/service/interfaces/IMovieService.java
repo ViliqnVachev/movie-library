@@ -25,4 +25,6 @@ public interface IMovieService {
 
 	List<MovieServiceModel> getRecentMovies();
 
+	List<MovieServiceModel> getAllMovies();
+
 }

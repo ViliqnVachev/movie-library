@@ -164,7 +164,6 @@ public class MovieServiceImpl implements IMovieService {
 		return topMovies;
 	}
 
-
 	@Override
 	public List<MovieServiceModel> getRecentMovies() {
 		List<MovieServiceModel> movies = movieRepository.findAll().stream()
@@ -178,6 +177,12 @@ public class MovieServiceImpl implements IMovieService {
 			recentMovies.add(movies.get(i));
 		}
 		return recentMovies;
+	}
+
+	@Override
+	public List<MovieServiceModel> getAllMovies() {
+		return movieRepository.findAll().stream().sorted((a, b) -> a.getLikes().size() - b.getDislikes().size())
+				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
 	}
 
 	private boolean canDelete(String username, Long id) {
