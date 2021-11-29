@@ -104,7 +104,7 @@ public class MovieController {
 	@DeleteMapping(AppConstants.MovieConfiguration.DELETE_PATH)
 	public String deleteMovie(@PathVariable Long id, Principal principal) {
 
-		movieService.deleteOffer(id);
+		movieService.deleteMovie(id);
 		return "redirect:/movies/mymovies";
 	}
 
@@ -124,6 +124,19 @@ public class MovieController {
 		movieService.voteMovie(id, principal.getName(), false);
 
 		return "redirect:/movies/details/" + id;
+	}
+
+	@GetMapping(AppConstants.MovieConfiguration.ALL_MOVIES_PATH)
+	public String allMovies(Model model) {
+		List<MovieServiceModel> movies = movieService.getAllMovies();
+		List<MovieViewModel> viewModels = movies.stream().map(serviceModel -> {
+			MovieViewModel view = mapper.map(serviceModel, MovieViewModel.class);
+			view.setReleaseDate(serviceModel.getReleaseDate().toString());
+			view.setCanDelete(true);
+			return view;
+		}).collect(Collectors.toList());
+		model.addAttribute("movies", viewModels);
+		return AppConstants.AL_MOVIES_VIEW;
 	}
 
 	@ModelAttribute

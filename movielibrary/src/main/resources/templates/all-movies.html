@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/common::head">
+
+</head>
+
+<body background="/images/2.png">
+    <header th:replace="fragments/common::navigation"> </header>
+
+    <main>
+        <div class="container body-content">
+            <div class="row">
+                <div class="col-md-12 text-left">
+                    <article>
+                        <header>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <h1>All movies</h1>
+                            <br>
+                        </header>
+                    </article>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div th:each="m : ${movies}" th:object="${m}" class="col-8 movie card col-sm-4 col-md-3 col-lg-3 m-2 p-0">
+                    <div  class="card-img-top-wrapper">
+                        <img class="card-img-top" th:src="*{pictureUrl}" alt="movie image">
+                    </div>
+                    <div class="card-body pb-1">
+                        <h5 th:text="*{title}" class="card-title">
+                            Movie Name</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="card-text"><span th:text="|• Release date: *{releaseDate}|"></span></div>
+                            <div class="card-text"><span th:text="|• Category: *{categories}|"></span></div>
+                            <div class="card-text"><span th:text="|• Added from: *{author}|"></span></div>
+                            <div class="card-text"><span th:text="|• Rating: *{raiting}|"></span></div>
+                        </li>
+                    </ul>
+                    <div class="card-body buttons-wrapper">
+                       <a th:href="@{/movies/details/{id}(id=*{id})}"> <input class="details"  type="image" name="details" src="/images/right-arrow.png" alt="text"
+                            ></a>
+                      <th:block th:if="*{canDelete}">
+                       <form th:action="@{/movies/delete/{id}(id=*{id})}" th:method="delete">
+                             <input class="delete" type="image" name="delete" src="/images/close.png" alt="text">
+                        </form>
+                      </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+    </main>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+          <footer th:replace="fragments/common::footer"> </footer>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

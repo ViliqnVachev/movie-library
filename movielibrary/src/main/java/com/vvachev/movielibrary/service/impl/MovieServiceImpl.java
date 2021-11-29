@@ -111,7 +111,7 @@ public class MovieServiceImpl implements IMovieService {
 	}
 
 	@Override
-	public void deleteOffer(Long id) {
+	public void deleteMovie(Long id) {
 		MovieEntity entity = movieRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
 		Set<PictureEntity> pictures = entity.getPictures();

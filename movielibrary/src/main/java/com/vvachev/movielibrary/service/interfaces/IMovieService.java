@@ -17,7 +17,7 @@ public interface IMovieService {
 
 	MovieDetailsView findById(Long id, String name);
 
-	void deleteOffer(Long id);
+	void deleteMovie(Long id);
 
 	void voteMovie(Long id, String username, boolean isLike);
 

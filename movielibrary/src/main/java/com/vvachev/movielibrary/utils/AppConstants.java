@@ -10,6 +10,8 @@ public final class AppConstants {
 
 	public static final String MY_MOVIES_VIEW = "my-movies";
 
+	public static final String AL_MOVIES_VIEW = "all-movies";
+
 	public static final String MOVIE_DETAILS_VIEW = "movie-details";
 
 	public static final String REGISTER_VIEW = "register";
@@ -55,6 +57,8 @@ public final class AppConstants {
 		public static final String ADD_PATH = "/add";
 
 		public static final String MY_MOVIES_PATH = "/mymovies";
+
+		public static final String ALL_MOVIES_PATH = "/all";
 
 		public static final String DETAILS_PATH = "/details/{id}";
 
