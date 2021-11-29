@@ -26,4 +26,6 @@ public interface IUserService {
 
 	UserServiceModel disableUser(Long id);
 
+	void enableUsers();
+
 }

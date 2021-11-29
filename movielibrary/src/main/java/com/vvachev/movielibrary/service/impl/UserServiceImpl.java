@@ -129,6 +129,17 @@ public class UserServiceImpl implements IUserService {
 		return mapToServiceModel(userRepository.save(userEntity));
 	}
 
+	@Override
+	public void enableUsers() {
+		List<UserEntity> disabledUsers = userRepository.findAllDisabledUsers();
+
+		for (UserEntity userEntity : disabledUsers) {
+			userEntity.setActive(true);
+			userRepository.save(userEntity);
+		}
+
+	}
+
 	public boolean isAdmin(String username) {
 		UserServiceModel user = findByUsername(username);
 		if (user.getRoles().contains(RoleEnum.ADMIN.name())) {
@@ -144,4 +155,5 @@ public class UserServiceImpl implements IUserService {
 		userServiceModel.setMovies(entity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
 		return userServiceModel;
 	}
+
 }
