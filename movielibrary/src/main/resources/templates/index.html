@@ -104,14 +104,17 @@
 				<br> <br>
 
 			</div>
+			<th:block th:if="${mostLikedMovie}!=null">
 			<div class="container">
 				<div class="row justify-content-center">
 					<div th:object="${mostLikedMovie}"
 						class="col-12 movie card col-sm-12 col-md-12 justify-content-center text-center col-lg-10 m-2 p-0 recent">
+						
 						<iframe class="embed-responsive-item" th:src="*{videoUrl}"></iframe>
 					</div>
 				</div>
 			</div>
+		</th:block>
 		</div>
 	</main>
 	<br>

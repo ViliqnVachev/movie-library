@@ -1,10 +1,10 @@
 package com.vvachev.movielibrary.service.impl;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.management.relation.RoleNotFoundException;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements IUserService {
 			admin.setUsername(AppConstants.UserConfiguration.ADMIN);
 			admin.setFullName(AppConstants.UserConfiguration.ADMIN);
 			admin.setPassword(passwordEncoder.encode(AppConstants.UserConfiguration.ADMIN));
-			admin.setRoles(Set.of(adminRole, userRole));
+			admin.setRoles(List.of(adminRole, userRole));
 			admin.setActive(true);
 			admin.setEmail(AppConstants.UserConfiguration.ADMIN_EMAIL);
 
@@ -86,7 +86,7 @@ public class UserServiceImpl implements IUserService {
 		userEntity.setPassword(passwordEncoder.encode(userServiceModel.getPassword()));
 		userEntity.setActive(true);
 		userEntity.setEmail(userServiceModel.getEmail());
-		userEntity.setRoles(Set.of(role));
+		userEntity.setRoles(List.of(role));
 
 		userRepository.save(userEntity);
 		return mapper.map(userEntity, UserServiceModel.class);
@@ -100,6 +100,7 @@ public class UserServiceImpl implements IUserService {
 		return mapToServiceModel(userEntity);
 	}
 
+	@Transactional
 	@Override
 	public UserServiceModel getCurrentUser(String username) {
 		return findByUsername(username);
@@ -113,12 +114,14 @@ public class UserServiceImpl implements IUserService {
 		userRepository.save(userEntity);
 	}
 
+	@Transactional
 	@Override
 	public List<UserServiceModel> getAllUsers() {
 		List<UserEntity> users = userRepository.findAll();
 		return users.stream().map(user -> mapToServiceModel(user)).collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public UserServiceModel disableUser(Long id) {
 		UserEntity userEntity = userRepository.findById(id)
@@ -129,6 +132,7 @@ public class UserServiceImpl implements IUserService {
 		return mapToServiceModel(userRepository.save(userEntity));
 	}
 
+	@Transactional
 	@Override
 	public void enableUsers() {
 		List<UserEntity> disabledUsers = userRepository.findAllDisabledUsers();
@@ -150,9 +154,9 @@ public class UserServiceImpl implements IUserService {
 
 	private UserServiceModel mapToServiceModel(UserEntity entity) {
 		UserServiceModel userServiceModel = mapper.map(entity, UserServiceModel.class);
-		Set<String> roles = entity.getRoles().stream().map(ent -> ent.getRole().name()).collect(Collectors.toSet());
+		List<String> roles = entity.getRoles().stream().map(ent -> ent.getRole().name()).collect(Collectors.toList());
 		userServiceModel.setRoles(roles);
-		userServiceModel.setMovies(entity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toSet()));
+		userServiceModel.setMovies(entity.getMovies().stream().map(ent -> ent.getTitle()).collect(Collectors.toList()));
 		return userServiceModel;
 	}
 

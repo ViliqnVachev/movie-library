@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.service;
 
-import java.util.Set;
+import java.util.List;
 
 public class UserServiceModel extends BaseServiceModel {
 
@@ -14,9 +14,9 @@ public class UserServiceModel extends BaseServiceModel {
 
 	private String email;
 
-	private Set<String> movies;
+	private List<String> movies;
 
-	private Set<String> roles;
+	private List<String> roles;
 
 	private boolean isActive;
 
@@ -31,19 +31,19 @@ public class UserServiceModel extends BaseServiceModel {
 		this.isActive = isActive;
 	}
 
-	public Set<String> getRoles() {
+	public List<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
 
-	public Set<String> getMovies() {
+	public List<String> getMovies() {
 		return movies;
 	}
 
-	public void setMovies(Set<String> movies) {
+	public void setMovies(List<String> movies) {
 		this.movies = movies;
 	}
 

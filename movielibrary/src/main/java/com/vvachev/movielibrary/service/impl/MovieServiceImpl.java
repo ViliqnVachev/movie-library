@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +65,9 @@ public class MovieServiceImpl implements IMovieService {
 	public void createMovie(MovieServiceModel movieServiceModel, String username) throws IOException {
 		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
 				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
-		Set<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream().map(cat -> convertToEntity(cat))
-				.collect(Collectors.toSet());
+		List<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream()
+				.map(cat -> convertToEntity(cat))
+				.collect(Collectors.toList());
 
 		MovieEntity movieEntity = mapper.map(movieServiceModel, MovieEntity.class);
 		movieEntity.setAuthor(userEntity);
@@ -79,7 +80,7 @@ public class MovieServiceImpl implements IMovieService {
 				.orElseThrow(() -> new EntityNotFoundException(
 						String.format("Picture with id %d not found!", pictureModel.getId())));
 
-		movieEntity.setPictures(Set.of(pictureEntity));
+		movieEntity.setPictures(List.of(pictureEntity));
 
 		movieRepository.save(movieEntity);
 	}
@@ -89,6 +90,7 @@ public class MovieServiceImpl implements IMovieService {
 		return mapper.map(movieRepository.findByTitle(movieTitle), MovieServiceModel.class);
 	}
 
+	@Transactional
 	@Override
 	public List<MovieServiceModel> getUseresMovies(String username) {
 		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
@@ -103,6 +105,7 @@ public class MovieServiceImpl implements IMovieService {
 		return usersMovies;
 	}
 
+	@Transactional
 	@Override
 	public MovieDetailsView findById(Long id, String username) {
 		MovieDetailsView view = movieRepository.findById(id).map(movEnt -> mapDetailsView(movEnt, username))
@@ -110,15 +113,17 @@ public class MovieServiceImpl implements IMovieService {
 		return view;
 	}
 
+	@Transactional
 	@Override
 	public void deleteMovie(Long id) {
 		MovieEntity entity = movieRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
-		Set<PictureEntity> pictures = entity.getPictures();
+		List<PictureEntity> pictures = entity.getPictures();
 		pictureService.deletePicture(pictures.iterator().next().getPublicId());
 		movieRepository.deleteById(id);
 	}
 
+	@Transactional
 	@Override
 	public void voteMovie(Long id, String username, boolean isLike) {
 		MovieEntity movieEntity = movieRepository.findById(id)
@@ -128,9 +133,9 @@ public class MovieServiceImpl implements IMovieService {
 
 		if (isLike) {
 			if (movieEntity.getLikes() == null) {
-				movieEntity.setLikes(Set.of(userEntity));
+				movieEntity.setLikes(List.of(userEntity));
 			} else {
-				Set<UserEntity> likes = movieEntity.getLikes();
+				List<UserEntity> likes = movieEntity.getLikes();
 				likes.add(userEntity);
 				movieEntity.setLikes(likes);
 			}
@@ -138,9 +143,9 @@ public class MovieServiceImpl implements IMovieService {
 
 		if (!isLike) {
 			if (movieEntity.getDislikes() == null) {
-				movieEntity.setDislikes(Set.of(userEntity));
+				movieEntity.setDislikes(List.of(userEntity));
 			} else {
-				Set<UserEntity> dislikes = movieEntity.getDislikes();
+				List<UserEntity> dislikes = movieEntity.getDislikes();
 				dislikes.add(userEntity);
 				movieEntity.setDislikes(dislikes);
 			}
@@ -149,6 +154,7 @@ public class MovieServiceImpl implements IMovieService {
 		movieRepository.save(movieEntity);
 	}
 
+	@Transactional
 	@Override
 	public List<MovieServiceModel> getTopMovies() {
 		List<MovieServiceModel> movies = movieRepository.findAll().stream()
@@ -164,6 +170,7 @@ public class MovieServiceImpl implements IMovieService {
 		return topMovies;
 	}
 
+	@Transactional
 	@Override
 	public List<MovieServiceModel> getRecentMovies() {
 		List<MovieServiceModel> movies = movieRepository.findAll().stream()
@@ -179,6 +186,7 @@ public class MovieServiceImpl implements IMovieService {
 		return recentMovies;
 	}
 
+	@Transactional
 	@Override
 	public List<MovieServiceModel> getAllMovies() {
 		return movieRepository.findAll().stream().sorted((a, b) -> a.getLikes().size() - b.getDislikes().size())
@@ -264,8 +272,8 @@ public class MovieServiceImpl implements IMovieService {
 	private MovieServiceModel convertToServiceModel(MovieEntity movieEntity, String username) {
 		MovieServiceModel movieServiceModel = mapper.map(movieEntity, MovieServiceModel.class);
 		movieServiceModel.setPictureUrl(movieEntity.getPictures().iterator().next().getUrl());
-		Set<CategoryEnum> categories = movieEntity.getCategories().stream().map(catEnt -> catEnt.getName())
-				.collect(Collectors.toSet());
+		List<CategoryEnum> categories = movieEntity.getCategories().stream().map(catEnt -> catEnt.getName())
+				.collect(Collectors.toList());
 		movieServiceModel.setCategories(categories);
 		movieServiceModel.setAuthor(username);
 		movieServiceModel.setRaiting(calculateRating(movieEntity));

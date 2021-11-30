@@ -1,5 +1,7 @@
 package com.vvachev.movielibrary.init;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,7 @@ public class DatabseInit implements CommandLineRunner {
 		this.categoryService = categoryService;
 	}
 
+	@Transactional
 	@Override
 	public void run(String... args) throws Exception {
 		categoryService.initCategories();

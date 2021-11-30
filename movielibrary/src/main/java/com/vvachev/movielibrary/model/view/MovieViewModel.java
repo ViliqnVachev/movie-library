@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.view;
 
-import java.util.Set;
+import java.util.List;
 
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 
@@ -8,7 +8,7 @@ public class MovieViewModel extends BaseViewModel {
 
 	private String title;
 	private String releaseDate;
-	private Set<CategoryEnum> categories;
+	private List<CategoryEnum> categories;
 	private String author;
 	private double raiting;
 	private String pictureUrl;
@@ -58,11 +58,11 @@ public class MovieViewModel extends BaseViewModel {
 		this.releaseDate = releaseDate;
 	}
 
-	public Set<CategoryEnum> getCategories() {
+	public List<CategoryEnum> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(Set<CategoryEnum> categories) {
+	public void setCategories(List<CategoryEnum> categories) {
 		this.categories = categories;
 	}
 

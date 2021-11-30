@@ -1,7 +1,7 @@
 package com.vvachev.movielibrary.model.binding;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -34,7 +34,7 @@ public class AddMovieBinding {
 	private LocalDate releaseDate;
 
 	@NotNull
-	private Set<CategoryEnum> categories;
+	private List<CategoryEnum> categories;
 
 	public AddMovieBinding() {
 	}
@@ -79,11 +79,11 @@ public class AddMovieBinding {
 		this.releaseDate = releaseDate;
 	}
 
-	public Set<CategoryEnum> getCategories() {
+	public List<CategoryEnum> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(Set<CategoryEnum> categories) {
+	public void setCategories(List<CategoryEnum> categories) {
 		this.categories = categories;
 	}
 }

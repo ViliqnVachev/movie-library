@@ -1,7 +1,7 @@
 package com.vvachev.movielibrary.model.service;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +25,7 @@ public class MovieServiceModel extends BaseServiceModel {
 
 	private double raiting;
 
-	private Set<CategoryEnum> categories;
+	private List<CategoryEnum> categories;
 
 	public MovieServiceModel() {
 	}
@@ -54,11 +54,11 @@ public class MovieServiceModel extends BaseServiceModel {
 		this.author = author;
 	}
 
-	public Set<CategoryEnum> getCategories() {
+	public List<CategoryEnum> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(Set<CategoryEnum> categories) {
+	public void setCategories(List<CategoryEnum> categories) {
 		this.categories = categories;
 	}
 

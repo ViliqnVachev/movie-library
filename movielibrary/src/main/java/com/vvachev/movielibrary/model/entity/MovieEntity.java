@@ -1,7 +1,7 @@
 package com.vvachev.movielibrary.model.entity;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,39 +32,42 @@ public class MovieEntity extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDate releaseDate;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private UserEntity author;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<CategoryEntity> categories;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<CategoryEntity> categories;
 
-	@OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<PictureEntity> pictures;
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<PictureEntity> pictures;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Set<UserEntity> likes;
+	private List<UserEntity> likes;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "dislikes", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Set<UserEntity> dislikes;
+	private List<UserEntity> dislikes;
+
+	@OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<CommentEntity> comments;
 
 	public MovieEntity() {
 	}
 
-	public Set<UserEntity> getDislikes() {
+	public List<UserEntity> getDislikes() {
 		return dislikes;
 	}
 
-	public void setDislikes(Set<UserEntity> dislikes) {
+	public void setDislikes(List<UserEntity> dislikes) {
 		this.dislikes = dislikes;
 	}
 
-	public Set<UserEntity> getLikes() {
+	public List<UserEntity> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(Set<UserEntity> likes) {
+	public void setLikes(List<UserEntity> likes) {
 		this.likes = likes;
 	}
 
@@ -108,19 +111,19 @@ public class MovieEntity extends BaseEntity {
 		this.author = author;
 	}
 
-	public Set<CategoryEntity> getCategories() {
+	public List<CategoryEntity> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(Set<CategoryEntity> categories) {
+	public void setCategories(List<CategoryEntity> categories) {
 		this.categories = categories;
 	}
 
-	public Set<PictureEntity> getPictures() {
+	public List<PictureEntity> getPictures() {
 		return pictures;
 	}
 
-	public void setPictures(Set<PictureEntity> pictures) {
+	public void setPictures(List<PictureEntity> pictures) {
 		this.pictures = pictures;
 	}
 }

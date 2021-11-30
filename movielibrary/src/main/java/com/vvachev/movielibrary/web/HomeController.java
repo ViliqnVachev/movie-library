@@ -39,7 +39,9 @@ public class HomeController {
 
 		model.addAttribute("topMovies", topMovies);
 		model.addAttribute("recentMovies", recentMovies);
-		model.addAttribute("mostLikedMovie", topMovies.get(0));
+		if (topMovies.size() > 0) {
+			model.addAttribute("mostLikedMovie", topMovies.get(0));
+		}
 		return AppConstants.INDEX_VIEW;
 	}
 

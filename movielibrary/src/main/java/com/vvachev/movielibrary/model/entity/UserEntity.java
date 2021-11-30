@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "users")
@@ -28,29 +29,29 @@ public class UserEntity extends BaseEntity {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<RoleEntity> roles;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<RoleEntity> roles;
 
-	@ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
-	private Set<MovieEntity> likedMovies;
+	@ManyToMany(mappedBy = "likes", fetch = FetchType.LAZY)
+	private List<MovieEntity> likedMovies;
 
-	@ManyToMany(mappedBy = "dislikes", fetch = FetchType.EAGER)
-	private Set<MovieEntity> dislikedMovies;
+	@ManyToMany(mappedBy = "dislikes", fetch = FetchType.LAZY)
+	private List<MovieEntity> dislikedMovies;
 
 	@Column
 	private boolean isActive;
 
-	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-	private Set<MovieEntity> movies;
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	private List<MovieEntity> movies;
 
 	public UserEntity() {
 	}
 
-	public Set<MovieEntity> getMovies() {
+	public List<MovieEntity> getMovies() {
 		return movies;
 	}
 
-	public void setMovies(Set<MovieEntity> movies) {
+	public void setMovies(List<MovieEntity> movies) {
 		this.movies = movies;
 	}
 
@@ -66,19 +67,19 @@ public class UserEntity extends BaseEntity {
 		this.isActive = isActive;
 	}
 
-	public Set<MovieEntity> getDislikedMovies() {
+	public List<MovieEntity> getDislikedMovies() {
 		return dislikedMovies;
 	}
 
-	public void setDislikedMovies(Set<MovieEntity> dislikedMovies) {
+	public void setDislikedMovies(List<MovieEntity> dislikedMovies) {
 		this.dislikedMovies = dislikedMovies;
 	}
 
-	public Set<MovieEntity> getLikedMovies() {
+	public List<MovieEntity> getLikedMovies() {
 		return likedMovies;
 	}
 
-	public void setLikedMovies(Set<MovieEntity> likedMovies) {
+	public void setLikedMovies(List<MovieEntity> likedMovies) {
 		this.likedMovies = likedMovies;
 	}
 
@@ -122,11 +123,11 @@ public class UserEntity extends BaseEntity {
 		this.email = email;
 	}
 
-	public Set<RoleEntity> getRoles() {
+	public List<RoleEntity> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<RoleEntity> roles) {
+	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
 }

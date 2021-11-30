@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.view;
 
-import java.util.Set;
+import java.util.List;
 
 public class UserViewModel extends BaseViewModel {
 
@@ -9,7 +9,7 @@ public class UserViewModel extends BaseViewModel {
 	private String fullName;
 	private String email;
 	private boolean isActive;
-	private Set<String> movies;
+	private List<String> movies;
 
 	public UserViewModel() {
 	}
@@ -54,11 +54,11 @@ public class UserViewModel extends BaseViewModel {
 		this.email = email;
 	}
 
-	public Set<String> getMovies() {
+	public List<String> getMovies() {
 		return movies;
 	}
 
-	public void setMovies(Set<String> movies) {
+	public void setMovies(List<String> movies) {
 		this.movies = movies;
 	}
 

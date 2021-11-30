@@ -3,6 +3,8 @@ package com.vvachev.movielibrary.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,6 +27,7 @@ public class UserMovieServiceImpl implements UserDetailsService {
 		this.userRepository = userRepository;
 	}
 
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByUsername(username)

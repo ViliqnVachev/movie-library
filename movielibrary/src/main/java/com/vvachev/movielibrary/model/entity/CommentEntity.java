@@ -1,6 +1,6 @@
 package com.vvachev.movielibrary.model.entity;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class CommentEntity extends BaseEntity {
 
 	@Column(nullable = false)
-	private Instant created;
+	private LocalDate created;
 
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String commentContent;
@@ -26,11 +26,11 @@ public class CommentEntity extends BaseEntity {
 	public CommentEntity() {
 	}
 
-	public Instant getCreated() {
+	public LocalDate getCreated() {
 		return created;
 	}
 
-	public void setCreated(Instant created) {
+	public void setCreated(LocalDate created) {
 		this.created = created;
 	}
 
