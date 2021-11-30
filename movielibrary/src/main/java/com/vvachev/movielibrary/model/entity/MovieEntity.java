@@ -55,6 +55,14 @@ public class MovieEntity extends BaseEntity {
 	public MovieEntity() {
 	}
 
+	public List<CommentEntity> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentEntity> comments) {
+		this.comments = comments;
+	}
+
 	public List<UserEntity> getDislikes() {
 		return dislikes;
 	}

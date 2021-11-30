@@ -6,7 +6,6 @@ import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +18,6 @@ import com.vvachev.movielibrary.model.service.PictureServiceModel;
 import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.repository.PictureRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
-import com.vvachev.movielibrary.service.interfaces.IMovieService;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
 
 @Service
@@ -27,18 +25,15 @@ public class PictureServiceImpl implements IPictureService {
 
 	private final CloudinaryServiceImpl cloudinaryServiceImpl;
 	private final PictureRepository pictureRepository;
-	private final IMovieService movieService;
 	private final UserRepository userRepository;
 	private final ModelMapper mapper;
 	private final MovieRepository movieRepository;
 
 	@Autowired
 	public PictureServiceImpl(CloudinaryServiceImpl cloudinaryServiceImpl, PictureRepository pictureRepository,
-			@Lazy IMovieService movieService, UserRepository userRepository, ModelMapper mapper,
-			MovieRepository movieRepository) {
+			UserRepository userRepository, ModelMapper mapper, MovieRepository movieRepository) {
 		this.cloudinaryServiceImpl = cloudinaryServiceImpl;
 		this.pictureRepository = pictureRepository;
-		this.movieService = movieService;
 		this.userRepository = userRepository;
 		this.mapper = mapper;
 		this.movieRepository = movieRepository;

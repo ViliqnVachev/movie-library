@@ -73,7 +73,9 @@ public final class AppConstants {
 
 	public static final class CommentConfiguration {
 
-		public static final String BASE_PATH = "/comments";
+		public static final String BASE_PATH = "/api/comments";
+
+		public static final String COMMENT_PATH = "/{movieId}";
 	}
 
 }

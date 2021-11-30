@@ -67,7 +67,7 @@
 
 						<div>
 							<!-- Comments submission -->
-							<form method="POST" action="/">
+							<form id="addComment" method="POST" action="/">
 								<div>
 									<h4>Leave a comment</h4>
 									<label for="message">Message</label>
@@ -103,6 +103,7 @@
 	<br>
 	<br>
 	<br>
+	<script th:src="@{/js/comments.js}"></script>
 	<div class="container">
 		<div class="row">
 			<footer th:replace="fragments/common::footer"> </footer>
