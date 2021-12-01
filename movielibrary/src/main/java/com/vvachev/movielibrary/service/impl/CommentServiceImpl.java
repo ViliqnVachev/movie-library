@@ -1,11 +1,15 @@
 package com.vvachev.movielibrary.service.impl;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,7 @@ public class CommentServiceImpl implements ICommentService {
 		this.mapper = mapper;
 	}
 
+	@Transactional
 	@Override
 	public List<CommentViewModel> getComments(Long movieId) {
 		Optional<MovieEntity> movieEnity = movieRepository.findById(movieId);
@@ -63,6 +68,7 @@ public class CommentServiceImpl implements ICommentService {
 		CommentEntity commentEntity = mapper.map(commentServiceModel, CommentEntity.class);
 		commentEntity.setAuthor(userEntity);
 		commentEntity.setMovie(movieEntity);
+		commentEntity.setCreated(LocalDate.now());
 
 		CommentViewModel commentViewModel = convertToView(commentRepository.save(commentEntity));
 
@@ -72,7 +78,8 @@ public class CommentServiceImpl implements ICommentService {
 	private CommentViewModel convertToView(CommentEntity commentEntity) {
 		CommentViewModel commentViewModel = new CommentViewModel();
 		commentViewModel.setId(commentEntity.getId());
-		commentViewModel.setCreated(commentEntity.getCreated());
+		commentViewModel
+				.setCreated(commentEntity.getCreated().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
 		commentViewModel.setCommentContent(commentEntity.getCommentContent());
 		commentViewModel.setAuthor(commentEntity.getAuthor().getFullName());
 		return commentViewModel;

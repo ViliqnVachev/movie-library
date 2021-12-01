@@ -1,12 +1,10 @@
 package com.vvachev.movielibrary.model.view;
 
-import java.time.LocalDate;
-
 public class CommentViewModel extends BaseViewModel {
 
 	private String commentContent;
 	private String author;
-	private LocalDate created;
+	private String created;
 
 	public CommentViewModel() {
 	}
@@ -27,11 +25,11 @@ public class CommentViewModel extends BaseViewModel {
 		this.author = author;
 	}
 
-	public LocalDate getCreated() {
+	public String getCreated() {
 		return created;
 	}
 
-	public void setCreated(LocalDate created) {
+	public void setCreated(String created) {
 		this.created = created;
 	}
 
