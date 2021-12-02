@@ -50,6 +50,10 @@ public final class AppConstants {
 
 	}
 
+	public static final class AboutConfiguration {
+		public static final String BASE_PATH = "/about";
+	}
+
 	public static final class MovieConfiguration {
 
 		public static final String BASE_PATH = "/movies";
