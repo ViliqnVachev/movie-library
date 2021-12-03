@@ -34,7 +34,6 @@ public class UserMovieServiceTest {
 	@BeforeEach
 	void init() {
 
-		// ARRANGE
 		userMovieService = new UserMovieServiceImpl(mockUserRepository);
 
 		adminRole = new RoleEntity();

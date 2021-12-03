@@ -1,7 +1,9 @@
 package com.vvachev.movielibrary.model.view;
 
-public abstract class BaseViewModel {
+import io.swagger.annotations.ApiModelProperty;
 
+public abstract class BaseViewModel {
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	public BaseViewModel() {

@@ -25,7 +25,11 @@ import com.vvachev.movielibrary.model.view.CommentViewModel;
 import com.vvachev.movielibrary.service.interfaces.ICommentService;
 import com.vvachev.movielibrary.utils.AppConstants;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+@Api(value = "comments", description = "REST API for Comments", tags = { "comments" })
 @RequestMapping(AppConstants.CommentConfiguration.BASE_PATH)
 public class CommentController {
 
@@ -39,11 +43,13 @@ public class CommentController {
 	}
 
 	@GetMapping(AppConstants.CommentConfiguration.COMMENT_PATH)
+	@ApiOperation(value = "Find all Comments", notes = "Find all comments ", response = CommentViewModel.class)
 	public ResponseEntity<List<CommentViewModel>> getComments(@PathVariable Long movieId, Principal principal) {
 		return ResponseEntity.ok(commentService.getComments(movieId));
 	}
 
 	@PostMapping(AppConstants.CommentConfiguration.COMMENT_PATH)
+	@ApiOperation(value = "Create a comment", notes = "Create a comment", response = CommentViewModel.class)
 	public ResponseEntity<CommentViewModel> addComment(@AuthenticationPrincipal UserDetails principal,
 			@PathVariable Long movieId, @RequestBody @Valid CommentBindingModel commentBindingModel,
 			UriComponentsBuilder builder) {
