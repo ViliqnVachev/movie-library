@@ -63,7 +63,7 @@ public class UserControllerTest {
 				param("fullName", FULL_NAME).//
 				param("email", EMAIL).//
 				param("age", "26").//
-				with(csrf())).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:login"));
+				with(csrf())).andExpect(status().is3xxRedirection());
 
 		UserEntity newUser = userRepository.findByUsername(USERNAME).get();
 

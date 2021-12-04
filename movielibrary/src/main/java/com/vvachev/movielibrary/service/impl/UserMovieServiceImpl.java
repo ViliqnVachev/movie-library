@@ -11,11 +11,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.repository.UserRepository;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Service
 public class UserMovieServiceImpl implements UserDetailsService {
@@ -29,10 +29,9 @@ public class UserMovieServiceImpl implements UserDetailsService {
 
 	@Transactional
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		UserEntity user = userRepository.findByUsername(username)
-				.orElseThrow(
-						() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 		return convertToUserDetails(user);
 	}
 

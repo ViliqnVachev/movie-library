@@ -2,8 +2,6 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +15,7 @@ import com.vvachev.movielibrary.model.entity.CategoryEntity;
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 import com.vvachev.movielibrary.model.service.CategoryServiceModel;
 import com.vvachev.movielibrary.repository.CategoryRepository;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
@@ -56,7 +55,7 @@ public class CategoryServiceTest {
 
 	@Test
 	void testNotFound() {
-		Assert.assertThrows(EntityNotFoundException.class,
+		Assert.assertThrows(NotFoundException.class,
 				() -> serviceTest.findByCategoryName(CategoryEnum.COMEDY));
 	}
 

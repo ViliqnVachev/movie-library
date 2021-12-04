@@ -2,11 +2,8 @@ package com.vvachev.movielibrary.service.impl;
 
 import java.io.IOException;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +16,7 @@ import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.repository.PictureRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Service
 public class PictureServiceImpl implements IPictureService {
@@ -44,10 +42,10 @@ public class PictureServiceImpl implements IPictureService {
 			throws IOException {
 		CloudinaryImage image = cloudinaryServiceImpl.upload(multipartFile);
 
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
-		MovieEntity movieEntity = movieRepository.findByTitle(movieTitle).orElseThrow(
-				() -> new EntityNotFoundException(String.format("Movie with title %s not found!", movieTitle)));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
+		MovieEntity movieEntity = movieRepository.findByTitle(movieTitle)
+				.orElseThrow(() -> new NotFoundException(String.format("Movie with title %s not found!", movieTitle)));
 
 		PictureEntity pictureEntity = new PictureEntity();
 		pictureEntity.setPublicId(image.getPublicId());
@@ -62,6 +60,5 @@ public class PictureServiceImpl implements IPictureService {
 	@Override
 	public void deletePicture(String publicId) {
 		cloudinaryServiceImpl.delete(publicId);
-
 	}
 }

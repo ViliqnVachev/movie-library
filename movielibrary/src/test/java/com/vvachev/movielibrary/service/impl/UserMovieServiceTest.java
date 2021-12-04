@@ -13,12 +13,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.vvachev.movielibrary.model.entity.RoleEntity;
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.repository.UserRepository;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class UserMovieServiceTest {
@@ -52,7 +52,7 @@ public class UserMovieServiceTest {
 
 	@Test
 	void testUserNotFound() {
-		Assertions.assertThrows(UsernameNotFoundException.class,
+		Assertions.assertThrows(NotFoundException.class,
 				() -> userMovieService.loadUserByUsername("invalid_user_email@not-exist.com"));
 	}
 

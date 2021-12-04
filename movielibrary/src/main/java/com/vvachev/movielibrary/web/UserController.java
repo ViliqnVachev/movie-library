@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.management.relation.RoleNotFoundException;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -33,6 +32,7 @@ import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
 import com.vvachev.movielibrary.utils.EmailConstants;
 import com.vvachev.movielibrary.web.events.Event;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Controller
 @RequestMapping(AppConstants.UserConfiguration.BASE_PATH)
@@ -86,7 +86,7 @@ public class UserController {
 			ApplicationEvent event = new Event(this, registeredUser.getUsername(), registeredUser.getEmail(),
 					EmailConstants.REGISTER_CONTENT_TEMPLATE);
 			eventPublisher.publishEvent(event);
-		} catch (RoleNotFoundException e) {
+		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

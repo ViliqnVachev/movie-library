@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 import com.vvachev.movielibrary.model.service.CategoryServiceModel;
 import com.vvachev.movielibrary.repository.CategoryRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
@@ -34,7 +33,6 @@ public class CategoryServiceImpl implements ICategoryService {
 			List<CategoryEntity> categories = Arrays.stream(CategoryEnum.values()).map(catEnum -> {
 				CategoryServiceModel category = new CategoryServiceModel();
 				category.setName(catEnum);
-
 				return convertToEntity(category);
 			}).collect(Collectors.toList());
 			repo.saveAll(categories);
@@ -43,8 +41,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
 	@Override
 	public CategoryServiceModel findByCategoryName(CategoryEnum name) {
-		CategoryEntity categoryEntiy = repo.findByName(name).orElseThrow(
-				() -> new EntityNotFoundException(String.format("Category with name %s not found!", name)));
+		CategoryEntity categoryEntiy = repo.findByName(name)
+				.orElseThrow(() -> new NotFoundException(String.format("Category with name %s not found!", name)));
 
 		return mapper.map(categoryEntiy, CategoryServiceModel.class);
 	}

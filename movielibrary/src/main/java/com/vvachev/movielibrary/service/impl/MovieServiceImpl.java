@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.vvachev.movielibrary.model.entity.CategoryEntity;
@@ -30,6 +28,7 @@ import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
 import com.vvachev.movielibrary.service.interfaces.IMovieService;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Service
 public class MovieServiceImpl implements IMovieService {
@@ -63,11 +62,10 @@ public class MovieServiceImpl implements IMovieService {
 
 	@Override
 	public void createMovie(MovieServiceModel movieServiceModel, String username) throws IOException {
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 		List<CategoryEntity> categoryEntity = movieServiceModel.getCategories().stream()
-				.map(cat -> convertToEntity(cat))
-				.collect(Collectors.toList());
+				.map(cat -> convertToEntity(cat)).collect(Collectors.toList());
 
 		MovieEntity movieEntity = mapper.map(movieServiceModel, MovieEntity.class);
 		movieEntity.setAuthor(userEntity);
@@ -76,9 +74,8 @@ public class MovieServiceImpl implements IMovieService {
 
 		PictureServiceModel pictureModel = pictureService.uploadPicture(movieServiceModel.getPicture(), username,
 				movieServiceModel.getTitle());
-		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId())
-				.orElseThrow(() -> new EntityNotFoundException(
-						String.format("Picture with id %d not found!", pictureModel.getId())));
+		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId()).orElseThrow(
+				() -> new NotFoundException(String.format("Picture with id %d not found!", pictureModel.getId())));
 
 		movieEntity.setPictures(List.of(pictureEntity));
 
@@ -93,8 +90,8 @@ public class MovieServiceImpl implements IMovieService {
 	@Transactional
 	@Override
 	public List<MovieServiceModel> getUseresMovies(String username) {
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 
 		List<MovieServiceModel> usersMovies = userEntity.getMovies().stream().map(movEnt -> {
 			MovieServiceModel model = convertToServiceModel(movEnt, username);
@@ -109,7 +106,7 @@ public class MovieServiceImpl implements IMovieService {
 	@Override
 	public MovieDetailsView findById(Long id, String username) {
 		MovieDetailsView view = movieRepository.findById(id).map(movEnt -> mapDetailsView(movEnt, username))
-				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
+				.orElseThrow(() -> new NotFoundException("Movie is not found!"));
 		return view;
 	}
 
@@ -117,7 +114,7 @@ public class MovieServiceImpl implements IMovieService {
 	@Override
 	public void deleteMovie(Long id) {
 		MovieEntity entity = movieRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
+				.orElseThrow(() -> new NotFoundException("Movie is not found!"));
 		List<PictureEntity> pictures = entity.getPictures();
 		pictureService.deletePicture(pictures.iterator().next().getPublicId());
 		movieRepository.deleteById(id);
@@ -127,9 +124,9 @@ public class MovieServiceImpl implements IMovieService {
 	@Override
 	public void voteMovie(Long id, String username, boolean isLike) {
 		MovieEntity movieEntity = movieRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Movie is not found!"));
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+				.orElseThrow(() -> new NotFoundException("Movie is not found!"));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 
 		if (isLike) {
 			if (movieEntity.getLikes() == null) {
@@ -195,8 +192,8 @@ public class MovieServiceImpl implements IMovieService {
 
 	public boolean canDelete(String username, Long id) {
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
-		UserEntity caller = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		UserEntity caller = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 
 		if (movieOpt.isEmpty()) {
 			return false;

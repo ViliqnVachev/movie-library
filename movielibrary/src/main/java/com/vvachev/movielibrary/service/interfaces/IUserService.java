@@ -12,7 +12,7 @@ public interface IUserService {
 
 	boolean isUniqueName(String username);
 
-	UserServiceModel register(UserServiceModel map) throws RoleNotFoundException;
+	UserServiceModel register(UserServiceModel map);
 
 	boolean isUniqueEmail(String email);
 

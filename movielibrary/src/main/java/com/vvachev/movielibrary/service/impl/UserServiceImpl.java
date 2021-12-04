@@ -3,12 +3,10 @@ package com.vvachev.movielibrary.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.management.relation.RoleNotFoundException;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +18,7 @@ import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IRoleService;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Service
 public class UserServiceImpl implements IUserService {
@@ -39,7 +38,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void initUsers() throws RoleNotFoundException {
+	public void initUsers() {
 		if (this.userRepository.count() == 0) {
 			RoleEntity adminRole = mapper.map(roleService.findByRole(RoleEnum.ADMIN), RoleEntity.class);
 			RoleEntity userRole = mapper.map(roleService.findByRole(RoleEnum.USER), RoleEntity.class);
@@ -75,7 +74,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public UserServiceModel register(UserServiceModel userServiceModel) throws RoleNotFoundException {
+	public UserServiceModel register(UserServiceModel userServiceModel) {
 
 		RoleEntity role = mapper.map(roleService.findByRole(RoleEnum.USER), RoleEntity.class);
 
@@ -94,8 +93,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public UserServiceModel findByUsername(String username) {
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 
 		return mapToServiceModel(userEntity);
 	}
@@ -108,8 +107,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public void changePassowrd(String newPassword, String username) {
-		UserEntity userEntity = userRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException(String.format("User with name %s not found!", username)));
+		UserEntity userEntity = userRepository.findByUsername(username)
+				.orElseThrow(() -> new NotFoundException(String.format("User with name %s not found!", username)));
 		userEntity.setPassword(passwordEncoder.encode(newPassword));
 		userRepository.save(userEntity);
 	}
@@ -125,7 +124,7 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserServiceModel disableUser(Long id) {
 		UserEntity userEntity = userRepository.findById(id)
-				.orElseThrow(() -> new UsernameNotFoundException(String.format("User with id %d not found!", id)));
+				.orElseThrow(() -> new NotFoundException(String.format("User with id %d not found!", id)));
 
 		userEntity.setActive(false);
 

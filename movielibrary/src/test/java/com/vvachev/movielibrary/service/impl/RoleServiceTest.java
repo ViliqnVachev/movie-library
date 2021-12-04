@@ -17,6 +17,7 @@ import com.vvachev.movielibrary.model.entity.RoleEntity;
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.model.service.RoleServiceModel;
 import com.vvachev.movielibrary.repository.RoleRepository;
+import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class RoleServiceTest {
@@ -49,8 +50,8 @@ public class RoleServiceTest {
 	}
 
 	@Test
-	void testNotFound() throws RoleNotFoundException {
-		Assert.assertThrows(RoleNotFoundException.class, () -> serviceTest.findByRole(RoleEnum.USER));
+	void testNotFound() throws NotFoundException {
+		Assert.assertThrows(NotFoundException.class, () -> serviceTest.findByRole(RoleEnum.USER));
 	}
 
 }
