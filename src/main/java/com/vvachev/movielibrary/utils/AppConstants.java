@@ -82,4 +82,11 @@ public final class AppConstants {
 		public static final String COMMENT_PATH = "/{movieId}";
 	}
 
+	public static final class AdminStatistic {
+
+		public static final String BASE_PATH = "/admin";
+
+		public static final String AUTH_STAT_PATH = "/statistic";
+	}
+
 }
