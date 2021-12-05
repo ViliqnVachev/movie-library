@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
+body{
+	background:url("/images/2.png")
+}
+
 .logo{
     height:40px ;
     display: block;
