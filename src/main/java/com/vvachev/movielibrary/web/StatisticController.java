@@ -24,7 +24,7 @@ public class StatisticController {
 	public ModelAndView getStats() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("stats", statServer.getStats());
-		modelAndView.setViewName("statistic");
+		modelAndView.setViewName(AppConstants.STAT_VIEW);
 		return modelAndView;
 	}
 

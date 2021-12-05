@@ -12,7 +12,7 @@ public class AboutController {
 
 	@GetMapping
 	public String about() {
-		return "about";
+		return AppConstants.ABOUT_VIEW;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.vvachev.movielibrary.service.interfaces.IStatisticService;
+import com.vvachev.movielibrary.utils.AppConstants;
 
 @Component
 public class StatisticInterceptor implements HandlerInterceptor {
@@ -20,7 +21,7 @@ public class StatisticInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		String path = request.getRequestURI();
-		if (path.equals("/home")) {
+		if (path.equals(AppConstants.HOME_PATH)) {
 			statsService.onRequest();
 		}
 	}

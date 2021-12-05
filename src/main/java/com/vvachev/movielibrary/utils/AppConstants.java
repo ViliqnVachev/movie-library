@@ -26,6 +26,12 @@ public final class AppConstants {
 
 	public static final String HOME_PATH = "/home";
 
+	public static final String ABOUT_VIEW = "about";
+
+	public static final String NOT_FOUND_VIEW = "404";
+
+	public static final String STAT_VIEW = "statistic";
+
 	public static class UserConfiguration {
 
 		public static final String ADMIN = "admin";
