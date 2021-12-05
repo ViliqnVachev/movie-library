@@ -73,8 +73,7 @@ public class MovieController {
 		try {
 			movieService.createMovie(mapper.map(addMovieBinding, MovieServiceModel.class), user.getUsername());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "500";
 		}
 
 		return "redirect:/movies/mymovies";

@@ -76,8 +76,9 @@ public class MovieServiceImpl implements IMovieService {
 				movieServiceModel.getTitle());
 		PictureEntity pictureEntity = pictureRepository.findById(pictureModel.getId()).orElseThrow(
 				() -> new NotFoundException(String.format("Picture with id %d not found!", pictureModel.getId())));
-
-		movieEntity.setPictures(List.of(pictureEntity));
+		List<PictureEntity> pictures = new ArrayList<PictureEntity>();
+		pictures.add(pictureEntity);
+		movieEntity.setPictures(pictures);
 
 		movieRepository.save(movieEntity);
 	}

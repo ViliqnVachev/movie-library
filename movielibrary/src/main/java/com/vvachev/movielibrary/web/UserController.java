@@ -87,8 +87,7 @@ public class UserController {
 					EmailConstants.REGISTER_CONTENT_TEMPLATE);
 			eventPublisher.publishEvent(event);
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "404";
 		}
 		return "redirect:login";
 	}

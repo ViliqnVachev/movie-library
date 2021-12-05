@@ -46,7 +46,7 @@ public class UserControllerTest {
 	private PasswordEncoder encoder;
 
 	@AfterEach
-	void tearDown() {
+	void clean() {
 		userRepository.deleteAll();
 	}
 
@@ -111,8 +111,6 @@ public class UserControllerTest {
 		newUser.setEmail(EMAIL);
 		newUser.setRoles(List.of(role));
 		userRepository.save(newUser);
-
-//		UserEntity newUser = userRepository.findByUsername(USERNAME).get();
 
 		Assert.assertEquals(newUser.getUsername(), USERNAME);
 		Assert.assertEquals(newUser.getEmail(), EMAIL);
