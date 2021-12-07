@@ -23,7 +23,7 @@ import com.vvachev.movielibrary.repository.CommentRepository;
 import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.ICommentService;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @Service
 public class CommentServiceImpl implements ICommentService {

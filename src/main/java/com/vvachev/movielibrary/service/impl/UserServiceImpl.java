@@ -18,7 +18,7 @@ import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IRoleService;
 import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @Service
 public class UserServiceImpl implements IUserService {

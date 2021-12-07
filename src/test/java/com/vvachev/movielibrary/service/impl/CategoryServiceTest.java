@@ -15,7 +15,7 @@ import com.vvachev.movielibrary.model.entity.CategoryEntity;
 import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 import com.vvachev.movielibrary.model.service.CategoryServiceModel;
 import com.vvachev.movielibrary.repository.CategoryRepository;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
@@ -55,8 +55,7 @@ public class CategoryServiceTest {
 
 	@Test
 	void testNotFound() {
-		Assert.assertThrows(NotFoundException.class,
-				() -> serviceTest.findByCategoryName(CategoryEnum.COMEDY));
+		Assert.assertThrows(NotFoundException.class, () -> serviceTest.findByCategoryName(CategoryEnum.COMEDY));
 	}
 
 }

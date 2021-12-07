@@ -32,7 +32,6 @@ import com.vvachev.movielibrary.service.interfaces.IUserService;
 import com.vvachev.movielibrary.utils.AppConstants;
 import com.vvachev.movielibrary.utils.EmailConstants;
 import com.vvachev.movielibrary.web.events.Event;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
 
 @Controller
 @RequestMapping(AppConstants.UserConfiguration.BASE_PATH)
@@ -81,14 +80,10 @@ public class UserController {
 		}
 
 		UserServiceModel registeredUser;
-		try {
-			registeredUser = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
-			ApplicationEvent event = new Event(this, registeredUser.getUsername(), registeredUser.getEmail(),
-					EmailConstants.REGISTER_CONTENT_TEMPLATE);
-			eventPublisher.publishEvent(event);
-		} catch (NotFoundException e) {
-			return AppConstants.NOT_FOUND_VIEW;
-		}
+		registeredUser = userService.register(mapper.map(registerUserBinding, UserServiceModel.class));
+		ApplicationEvent event = new Event(this, registeredUser.getUsername(), registeredUser.getEmail(),
+				EmailConstants.REGISTER_CONTENT_TEMPLATE);
+		eventPublisher.publishEvent(event);
 		return "redirect:login";
 	}
 

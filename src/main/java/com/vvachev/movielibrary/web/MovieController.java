@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ import com.vvachev.movielibrary.service.interfaces.IMovieService;
 import com.vvachev.movielibrary.utils.AppConstants;
 
 @Controller
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequestMapping(AppConstants.MovieConfiguration.BASE_PATH)
 public class MovieController {
 
@@ -52,7 +54,7 @@ public class MovieController {
 
 	@PostMapping(AppConstants.MovieConfiguration.ADD_PATH)
 	public String addMovie(@Valid AddMovieBinding addMovieBinding, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
+			RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) throws IOException {
 
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("addMovieBinding", addMovieBinding)
@@ -70,11 +72,7 @@ public class MovieController {
 			return "redirect:/movies/add";
 		}
 
-		try {
-			movieService.createMovie(mapper.map(addMovieBinding, MovieServiceModel.class), user.getUsername());
-		} catch (IOException e) {
-			return "500";
-		}
+		movieService.createMovie(mapper.map(addMovieBinding, MovieServiceModel.class), user.getUsername());
 
 		return "redirect:/movies/mymovies";
 	}

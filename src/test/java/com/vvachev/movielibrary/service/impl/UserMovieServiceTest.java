@@ -18,7 +18,7 @@ import com.vvachev.movielibrary.model.entity.RoleEntity;
 import com.vvachev.movielibrary.model.entity.UserEntity;
 import com.vvachev.movielibrary.model.entity.enums.RoleEnum;
 import com.vvachev.movielibrary.repository.UserRepository;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 public class UserMovieServiceTest {

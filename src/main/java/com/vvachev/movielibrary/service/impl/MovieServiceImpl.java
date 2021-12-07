@@ -28,7 +28,7 @@ import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
 import com.vvachev.movielibrary.service.interfaces.IMovieService;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @Service
 public class MovieServiceImpl implements IMovieService {

@@ -13,7 +13,7 @@ import com.vvachev.movielibrary.model.entity.enums.CategoryEnum;
 import com.vvachev.movielibrary.model.service.CategoryServiceModel;
 import com.vvachev.movielibrary.repository.CategoryRepository;
 import com.vvachev.movielibrary.service.interfaces.ICategoryService;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {

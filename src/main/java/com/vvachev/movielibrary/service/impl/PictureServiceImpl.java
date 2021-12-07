@@ -16,7 +16,7 @@ import com.vvachev.movielibrary.repository.MovieRepository;
 import com.vvachev.movielibrary.repository.PictureRepository;
 import com.vvachev.movielibrary.repository.UserRepository;
 import com.vvachev.movielibrary.service.interfaces.IPictureService;
-import com.vvachev.movielibrary.web.exceptions.NotFoundException;
+import com.vvachev.movielibrary.utils.exceptions.NotFoundException;
 
 @Service
 public class PictureServiceImpl implements IPictureService {

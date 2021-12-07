@@ -126,3 +126,9 @@ span#total-likes{
 div.comment{
 	text-align: left;
 }
+div.error-page.row.justify-content-center {
+    font-size: 35px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+}
