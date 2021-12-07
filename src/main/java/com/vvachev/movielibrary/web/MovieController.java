@@ -97,7 +97,7 @@ public class MovieController {
 		return AppConstants.MOVIE_DETAILS_VIEW;
 	}
 
-	@PreAuthorize("@movieService.canDelete(#principal.name, #id)")
+	@PreAuthorize("@movieServiceImpl.canDelete(#principal.name, #id)")
 	@DeleteMapping(AppConstants.MovieConfiguration.DELETE_PATH)
 	public String deleteMovie(@PathVariable Long id, Principal principal) {
 
@@ -105,7 +105,7 @@ public class MovieController {
 		return "redirect:/movies/mymovies";
 	}
 
-	@PreAuthorize("@movieService.canVote(#principal.name, #id)")
+	@PreAuthorize("@movieServiceImpl.canVote(#principal.name, #id)")
 	@PostMapping(AppConstants.MovieConfiguration.LIKE_PATH)
 	public String likeMovie(@PathVariable Long id, Principal principal) {
 
@@ -114,7 +114,7 @@ public class MovieController {
 		return "redirect:/movies/details/" + id;
 	}
 
-	@PreAuthorize("@movieService.canVote(#principal.name, #id)")
+	@PreAuthorize("@movieServiceImpl.canVote(#principal.name, #id)")
 	@PostMapping(AppConstants.MovieConfiguration.DISLIKE_PATH)
 	public String dislikeMovie(@PathVariable Long id, Principal principal) {
 

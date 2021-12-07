@@ -191,6 +191,8 @@ public class MovieServiceImpl implements IMovieService {
 				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
 	}
 
+	@Transactional
+	@Override
 	public boolean canDelete(String username, Long id) {
 		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
 		UserEntity caller = userRepository.findByUsername(username)
@@ -202,6 +204,17 @@ public class MovieServiceImpl implements IMovieService {
 		MovieEntity movieEntity = movieOpt.get();
 
 		return isAdmin(caller) || movieEntity.getAuthor().getUsername().equals(username);
+	}
+
+	@Transactional
+	@Override
+	public boolean canVote(String currentUser, Long id) {
+		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
+		if (isOwner(currentUser, id) || alreadyVoted(movieOpt.get(), currentUser) || movieOpt.isEmpty()) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private MovieDetailsView mapDetailsView(MovieEntity movie, String currentUser) {
@@ -220,15 +233,6 @@ public class MovieServiceImpl implements IMovieService {
 		}
 
 		return likes / (likes + dislikes) * 10;
-	}
-
-	private boolean canVote(String currentUser, Long id) {
-		Optional<MovieEntity> movieOpt = movieRepository.findById(id);
-		if (isOwner(currentUser, id) || alreadyVoted(movieOpt.get(), currentUser) || movieOpt.isEmpty()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private boolean alreadyVoted(MovieEntity movieEntity, String username) {

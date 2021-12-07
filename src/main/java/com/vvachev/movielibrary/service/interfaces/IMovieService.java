@@ -27,4 +27,8 @@ public interface IMovieService {
 
 	List<MovieServiceModel> getAllMovies();
 
+	boolean canDelete(String username, Long id);
+
+	boolean canVote(String currentUser, Long id);
+
 }

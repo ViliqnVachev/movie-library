@@ -6,17 +6,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class ExceptionHandler {
-	public static final String PAGE_NOT_FOUND = "Page not found!";
+	private static final String NOT_FOUND = "Page not found!";
 
 	@org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
-	public ModelAndView handleAnyError(Exception e) {
-		ModelAndView modelAndView = new ModelAndView();
+	public ModelAndView handleErrors(Exception e, RuntimeException ex) {
+		ModelAndView modelAndView = new ModelAndView("error");
 		if (!e.getMessage().isEmpty()) {
 			modelAndView.addObject("errorMessage", e.getMessage());
 		} else {
-			modelAndView.addObject("errorMessage", PAGE_NOT_FOUND);
+			modelAndView.addObject("errorMessage", NOT_FOUND);
 		}
-		modelAndView.setViewName("page.html");
 		modelAndView.setStatus(HttpStatus.NOT_FOUND);
 		return modelAndView;
 	}
