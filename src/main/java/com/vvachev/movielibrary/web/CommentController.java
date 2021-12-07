@@ -60,9 +60,7 @@ public class CommentController {
 
 		CommentViewModel commentViewModel = commentService.addComment(commentServiceModel);
 		URI uri = builder.path(AppConstants.CommentConfiguration.BASE_PATH + "/moviecomment/{commentId}")
-				.buildAndExpand(commentViewModel.getId())
-				.toUri();
+				.buildAndExpand(commentViewModel.getId()).toUri();
 		return ResponseEntity.created(uri).body(commentViewModel);
 	}
-
 }
