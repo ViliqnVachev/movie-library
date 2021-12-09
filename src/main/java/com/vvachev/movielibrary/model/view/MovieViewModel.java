@@ -10,7 +10,7 @@ public class MovieViewModel extends BaseViewModel {
 	private String releaseDate;
 	private List<CategoryEnum> categories;
 	private String author;
-	private double raiting;
+	private String raiting;
 	private String pictureUrl;
 	private boolean canDelete;
 	private String videoUrl;
@@ -74,11 +74,11 @@ public class MovieViewModel extends BaseViewModel {
 		this.author = author;
 	}
 
-	public double getRaiting() {
+	public String getRaiting() {
 		return raiting;
 	}
 
-	public void setRaiting(double raiting) {
+	public void setRaiting(String raiting) {
 		this.raiting = raiting;
 	}
 }

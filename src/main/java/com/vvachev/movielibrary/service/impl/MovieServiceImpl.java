@@ -220,19 +220,19 @@ public class MovieServiceImpl implements IMovieService {
 	private MovieDetailsView mapDetailsView(MovieEntity movie, String currentUser) {
 		MovieDetailsView view = mapper.map(movie, MovieDetailsView.class);
 		view.setCanVote(canVote(currentUser, movie.getId()));
-		view.setRaiting(calculateRating(movie));
+		view.setRaiting(String.format("%.2f", calculateRating(movie)));
 		return view;
 	}
 
-	private int calculateRating(MovieEntity movie) {
-		int likes = movie.getLikes().size();
-		int dislikes = movie.getDislikes().size();
+	private double calculateRating(MovieEntity movie) {
+		double likes = movie.getLikes().size();
+		double dislikes = movie.getDislikes().size();
 
 		if (likes == 0 && dislikes == 0) {
 			return 0;
 		}
 
-		return likes / (likes + dislikes) * 10;
+		return (likes / (likes + dislikes)) * 10;
 	}
 
 	private boolean alreadyVoted(MovieEntity movieEntity, String username) {
