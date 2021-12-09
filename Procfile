@@ -1,0 +1,1 @@
+web: java -jar target/movielibrary-2.5.7.jar

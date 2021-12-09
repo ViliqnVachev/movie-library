@@ -11,7 +11,6 @@
 	</parent>
 	<groupId>com.vvachev</groupId>
 	<artifactId>movielibrary</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>movielibrary</name>
 	<description>Movie-library project for Spring Boot</description>
 	<properties>
@@ -47,11 +46,6 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,6 +90,10 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 	</dependencies>
 
