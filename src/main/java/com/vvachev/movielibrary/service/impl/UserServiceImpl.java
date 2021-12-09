@@ -143,6 +143,7 @@ public class UserServiceImpl implements IUserService {
 
 	}
 
+	@Transactional
 	public boolean isAdmin(String username) {
 		UserServiceModel user = findByUsername(username);
 		if (user.getRoles().contains(RoleEnum.ADMIN.name())) {

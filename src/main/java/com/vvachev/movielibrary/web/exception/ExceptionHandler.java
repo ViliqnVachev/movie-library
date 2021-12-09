@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ExceptionHandler implements ErrorController {
 	private static final String NOT_FOUND = "Page not found!";
+	private static final String DEFAULT_MESSAGE = "Something went wrong!";
 
 	@RequestMapping("/error")
 	public String handleError(Model model, HttpServletRequest request) {
@@ -22,7 +23,7 @@ public class ExceptionHandler implements ErrorController {
 		if (status == HttpStatus.NOT_FOUND.value()) {
 			model.addAttribute("errorMessage", NOT_FOUND);
 		} else {
-			model.addAttribute("errorMessage", errorMessage);
+			model.addAttribute("errorMessage", errorMessage.isEmpty() ? DEFAULT_MESSAGE : errorMessage);
 		}
 		return "error";
 	}

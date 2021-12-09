@@ -31,27 +31,42 @@ public class HomeController {
 
 	@GetMapping
 	public String getIndex(Model model) {
-		List<MovieViewModel> topMovies = movieService.getTopMovies().stream()
-				.map(ser -> mapper.map(ser, MovieViewModel.class)).collect(Collectors.toList());
+		List<MovieViewModel> topMovies = movieService.getTopMovies().stream().map(ser -> {
+			MovieViewModel view = mapper.map(ser, MovieViewModel.class);
+			view.setRaiting(String.format("%.2f", ser.getRaiting()));
+			return view;
+		}).collect(Collectors.toList());
 
-		List<MovieViewModel> recentMovies = movieService.getRecentMovies().stream()
-				.map(ser -> mapper.map(ser, MovieViewModel.class)).collect(Collectors.toList());
+		List<MovieViewModel> recentMovies = movieService.getRecentMovies().stream().map(ser -> {
+			MovieViewModel view = mapper.map(ser, MovieViewModel.class);
+			view.setRaiting(String.format("%.2f", ser.getRaiting()));
+			return view;
+		}).collect(Collectors.toList());
 
 		model.addAttribute("topMovies", topMovies);
 		model.addAttribute("recentMovies", recentMovies);
 		if (topMovies.size() > 0) {
-			model.addAttribute("mostLikedMovie", topMovies.get(0));
+			topMovies = topMovies.stream().sorted(
+					(a, b) -> Double.compare(Double.parseDouble(a.getRaiting()), Double.parseDouble(b.getRaiting())))
+					.collect(Collectors.toList());
+			model.addAttribute("mostLikedMovie", topMovies.get(topMovies.size() - 1));
 		}
 		return AppConstants.INDEX_VIEW;
 	}
 
 	@GetMapping(AppConstants.HOME_PATH)
 	public String getHome(Model model) {
-		List<MovieViewModel> topMovies = movieService.getTopMovies().stream()
-				.map(ser -> mapper.map(ser, MovieViewModel.class)).collect(Collectors.toList());
+		List<MovieViewModel> topMovies = movieService.getTopMovies().stream().map(ser -> {
+			MovieViewModel view = mapper.map(ser, MovieViewModel.class);
+			view.setRaiting(String.format("%.2f", ser.getRaiting()));
+			return view;
+		}).collect(Collectors.toList());
 
-		List<MovieViewModel> allMovies = movieService.getAllMovies().stream()
-				.map(ser -> mapper.map(ser, MovieViewModel.class)).collect(Collectors.toList());
+		List<MovieViewModel> allMovies = movieService.getAllMovies().stream().map(ser -> {
+			MovieViewModel view = mapper.map(ser, MovieViewModel.class);
+			view.setRaiting(String.format("%.2f", ser.getRaiting()));
+			return view;
+		}).collect(Collectors.toList());
 
 		Map<String, List<MovieViewModel>> views = new LinkedHashMap<>();
 		for (CategoryEnum category : CategoryEnum.values()) {

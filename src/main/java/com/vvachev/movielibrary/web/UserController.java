@@ -139,7 +139,7 @@ public class UserController {
 		return AppConstants.ALL_USERS_VIEW;
 	}
 
-	@PreAuthorize("@userService.isAdmin(#principal.name)")
+	@PreAuthorize("@userServiceImpl.isAdmin(#principal.name)")
 	@PostMapping(AppConstants.UserConfiguration.DISABLE_USER_PATH)
 	public String disableUser(@PathVariable Long id, Principal principal) {
 

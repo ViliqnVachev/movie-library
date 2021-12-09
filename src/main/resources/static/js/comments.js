@@ -2,7 +2,9 @@ let csrfHeaderName = document.head.querySelector('[name="_csrf_header"]').conten
 let csrfHeaderValue = document.head.querySelector('[name="_csrf"]').content;
 let submitForm = document.querySelector('#postComment');
 let movieId = document.querySelector('#movieId').value;
-let url = 'http://localhost:8080/api/comments';
+let protocol=document.location.protocol;
+let host=document.location.host;
+let url =`${protocol}//${host}/api/comments`;
 let commentCtnr = document.querySelector('#commentCtnr');
 submitForm.addEventListener('click', submitEventHandler);
 

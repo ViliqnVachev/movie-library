@@ -7,7 +7,7 @@ public class MovieDetailsView extends BaseViewModel {
 	private String title;
 	private String resume;
 	private List<String> comments;
-	private double raiting;
+	private String raiting;
 	private boolean canVote;
 
 	public MovieDetailsView() {
@@ -21,11 +21,11 @@ public class MovieDetailsView extends BaseViewModel {
 		this.canVote = canVote;
 	}
 
-	public double getRaiting() {
+	public String getRaiting() {
 		return raiting;
 	}
 
-	public void setRaiting(double raiting) {
+	public void setRaiting(String raiting) {
 		this.raiting = raiting;
 	}
 

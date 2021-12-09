@@ -84,6 +84,7 @@ public class MovieController {
 			MovieViewModel view = mapper.map(serviceModel, MovieViewModel.class);
 			view.setReleaseDate(serviceModel.getReleaseDate().toString());
 			view.setCanDelete(serviceModel.getAuthor().equals(user.getUsername()));
+			view.setRaiting(String.format("%.2f", serviceModel.getRaiting()));
 			return view;
 		}).collect(Collectors.toList());
 		model.addAttribute("movies", viewModels);
@@ -130,6 +131,7 @@ public class MovieController {
 			MovieViewModel view = mapper.map(serviceModel, MovieViewModel.class);
 			view.setReleaseDate(serviceModel.getReleaseDate().toString());
 			view.setCanDelete(true);
+			view.setRaiting(String.format("%.2f", serviceModel.getRaiting()));
 			return view;
 		}).collect(Collectors.toList());
 		model.addAttribute("movies", viewModels);
