@@ -156,8 +156,8 @@ public class MovieServiceImpl implements IMovieService {
 	@Override
 	public List<MovieServiceModel> getTopMovies() {
 		List<MovieServiceModel> movies = movieRepository.findAll().stream()
-				.sorted((a, b) -> a.getLikes().size() - b.getDislikes().size())
-				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername())).collect(Collectors.toList());
+				.map(ent -> convertToServiceModel(ent, ent.getAuthor().getUsername()))
+				.sorted((a, b) -> Double.compare(b.getRaiting(), a.getRaiting())).collect(Collectors.toList());
 		List<MovieServiceModel> topMovies = new ArrayList<>();
 		if (movies.size() < 3) {
 			return movies;

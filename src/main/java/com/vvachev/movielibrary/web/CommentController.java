@@ -1,7 +1,6 @@
 package com.vvachev.movielibrary.web;
 
 import java.net.URI;
-import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,8 +8,8 @@ import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,18 +43,18 @@ public class CommentController {
 
 	@GetMapping(AppConstants.CommentConfiguration.COMMENT_PATH)
 	@ApiOperation(value = "Find all Comments", notes = "Find all comments ", response = CommentViewModel.class)
-	public ResponseEntity<List<CommentViewModel>> getComments(@PathVariable Long movieId, Principal principal) {
+	public ResponseEntity<List<CommentViewModel>> getComments(@PathVariable Long movieId) {
 		return ResponseEntity.ok(commentService.getComments(movieId));
 	}
 
 	@PostMapping(AppConstants.CommentConfiguration.COMMENT_PATH)
 	@ApiOperation(value = "Create a comment", notes = "Create a comment", response = CommentViewModel.class)
-	public ResponseEntity<CommentViewModel> addComment(@AuthenticationPrincipal UserDetails principal,
-			@PathVariable Long movieId, @RequestBody @Valid CommentBindingModel commentBindingModel,
-			UriComponentsBuilder builder) {
+	public ResponseEntity<CommentViewModel> addComment(@PathVariable Long movieId,
+			@RequestBody @Valid CommentBindingModel commentBindingModel, UriComponentsBuilder builder) {
+		Authentication principal = SecurityContextHolder.getContext().getAuthentication();
 
 		CommentServiceModel commentServiceModel = mapper.map(commentBindingModel, CommentServiceModel.class);
-		commentServiceModel.setAuthor(principal.getUsername());
+		commentServiceModel.setAuthor(principal.getName());
 		commentServiceModel.setMovieId(movieId);
 
 		CommentViewModel commentViewModel = commentService.addComment(commentServiceModel);
