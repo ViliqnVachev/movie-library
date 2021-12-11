@@ -13,19 +13,14 @@ async function submitEventHandler(e) {
     try {
         let response = await postComment();
         commentCtnr.prepend(createCommentHtml(response));
-        document.querySelector('#message').value = '';
+        let element = document.querySelector('#message');
+        element.value = '';
+    	if(element.classList.contains('is-invalid')){
+    		element.classList.remove('is-invalid');
+    	}
     } catch (error) {
-        let errorObj = JSON.parse(error.message);
-        if (errorObj.errors) {
-            errorObj.errors.forEach(e => {
-                let errorElement = e.field;
-                if (errorElement) {
-                    let element = document.querySelector('#message');
-                    element.classList.add("is-invalid");
-                }
-            }
-            )
-        }
+        let element = document.querySelector('#message');
+        element.classList.add("is-invalid");
     }
 }
 
@@ -41,9 +36,8 @@ async function postComment() {
         body: JSON.stringify(comentObj)
     });
 
-    if (!response.ok) {
-        let errorMessage = await response.text();
-        throw new Error(errorMessage);
+    if (response.status==400) {
+        throw new Error('400 Bad request');
     }
 
     return response.json();
