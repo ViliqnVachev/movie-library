@@ -21,6 +21,7 @@ public class EmailSenderListener {
 	public EmailSenderListener(IEmailService emailService) {
 		this.emailService = emailService;
 	}
+	// igin/master
 
 	@EventListener(Event.class)
 	public void onRegistration(Event registrationCreateEvent) {
