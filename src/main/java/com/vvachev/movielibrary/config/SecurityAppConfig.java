@@ -30,7 +30,7 @@ public class SecurityAppConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()//
 				.antMatchers("/users/login", "/users/register").anonymous()//
 				.antMatchers("/", "/about").permitAll()
-				.antMatchers("/users/all", "/movies/all").hasRole(RoleEnum.ADMIN.name())
+				.antMatchers("/users/all", "/movies/all", "/admin/statistic").hasRole(RoleEnum.ADMIN.name())
 				.antMatchers("/**").authenticated()//
 				.and()//
 				.formLogin()//
